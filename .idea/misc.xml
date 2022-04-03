@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ProjetCoddity/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/ProjetCoddity/app/src/main/res/layout/fragment_dashboard.xml" value="0.4" />
+        <entry key="..\:/ProjetCoddity/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/ProjetCoddity/app/src/main/res/layout/fragment_notifications.xml" value="0.21041666666666667" />
+        <entry key="..\:/ProjetCoddity/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/layout/activity_main.xml" value="0.17708333333333334" />
       </map>
     </option>
