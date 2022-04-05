@@ -11,7 +11,7 @@ This year the theme is the IPCC (GIEC in French) report. The purpose of the appl
 
 
 ## Install
--	```git clone https://github.com/CyrilleStr/AP4B```
+-	```git clone https://github.com/CyrilleStr/ProjetCoddity```
 -	Select `Run ‘Main.main()’` on `src.main.qlq.Main`
 
 ## About
