@@ -16,5 +16,10 @@
         android:name="com.coddity.grabthetrash.ui.dashboard.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.coddity.grabthetrash.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 
 </navigation>

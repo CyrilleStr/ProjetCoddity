@@ -11,4 +11,9 @@
         android:icon="@drawable/user"
         android:title="@string/title_account" />
 
+    <item
+        android:id="@+id/mapsFragment"
+        android:icon="@drawable/user"
+        android:title="Map" />
+
 </menu>
