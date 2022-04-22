@@ -2,6 +2,7 @@ package com.coddity.grabthetrash
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -14,10 +15,13 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var pictureImgVw: ImageView
     private lateinit var openCameraBtn: Button
 */
+    private lateinit var textView:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        textView = findViewById(R.id.trashState)
+        TrashOnTheWay(textView)
     ///////////////////////////
       /*  _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -64,5 +68,10 @@ class HomeActivity : AppCompatActivity() {
         }*/
     ///////////////////////
        // return root
+    }
+    fun TrashOnTheWay(textView: TextView){
+        textView.isEnabled = true
+        textView.text="Vous êtes entrain de jeter un déchet"
+
     }
 }
