@@ -69,7 +69,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/loginButton"
                 android:layout_width="361dp"
                 android:layout_height="48dp"
                 android:backgroundTint="#00BCD4"

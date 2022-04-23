@@ -64,6 +64,8 @@ dependencies {
     // EasyPermissions is needed to help us request for permission to access location
     implementation 'pub.devrel:easypermissions:3.0.0'
 
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
     // GMS
 
 //    gmsImplementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
