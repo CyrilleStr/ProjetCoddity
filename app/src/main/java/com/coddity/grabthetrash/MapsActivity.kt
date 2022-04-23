@@ -40,13 +40,11 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-
-        // Initialize and assign variable
+        /** Setup bottom navigation **/
+        // Get View
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
         // Set Maps selected
         bottomNavigationView.selectedItemId = R.id.maps
-
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {

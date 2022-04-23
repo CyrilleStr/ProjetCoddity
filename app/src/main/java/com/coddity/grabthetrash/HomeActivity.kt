@@ -38,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
         /** Setup bottom navigation **/
+        // Get View
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         // Set Home selected
         bottomNavigationView.selectedItemId = R.id.navigation_home
