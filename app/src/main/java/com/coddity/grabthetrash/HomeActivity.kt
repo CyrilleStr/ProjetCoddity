@@ -4,8 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Layout
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -25,6 +23,11 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var addItemSelection: ConstraintLayout
     private val PIC_ID = 123
 
+    private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
+    object KeyPreferences{
+        const val PICTURE_IS_TAKEN = "PICTURE_IS_TAKEN_KEY"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -37,11 +40,13 @@ class HomeActivity : AppCompatActivity() {
         addItemSelection = findViewById<ConstraintLayout>(R.id.addItemSelection)
 
         TrashOnTheWay(textView)
+        startService(Intent(this, BackgroundLocationUpdateService::class.java))
 
         openCameraBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent,PIC_ID)
+                TrashOnTheWay(textView)
             }
         })
 
@@ -80,11 +85,18 @@ class HomeActivity : AppCompatActivity() {
                 ?.get("data") as Bitmap?
             pictureImgVw.setImageBitmap(photo)
             addItemSelection.visibility = View.VISIBLE
+            getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(KeyPreferences.PICTURE_IS_TAKEN, 1).apply()
         }
     }
 
-    fun TrashOnTheWay(textView: TextView){
-        textView.isEnabled = true
-        textView.text="Vous êtes entrain de jeter un déchet"
+    fun TrashOnTheWay(textView: TextView) {
+        if (getSharedPreferences(
+                SHARED_PREF_USER_INFO,
+                MODE_PRIVATE
+            ).getInt(KeyPreferences.PICTURE_IS_TAKEN, 0) == 1
+        ) {
+            textView.isEnabled = true
+            textView.text = "Vous êtes entrain de jeter un déchet"
+        }
     }
 }
