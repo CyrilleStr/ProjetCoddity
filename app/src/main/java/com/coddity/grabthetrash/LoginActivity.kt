@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import org.json.JSONObject
-import web.WebClient
+import com.coddity.grabthetrash.web.WebClient
 
 
 class LoginActivity : AppCompatActivity() {
@@ -31,11 +31,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         /* Get authentication Token */
-        val token = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE).getString(
-            SHARED_PREF_USER_TOKEN,
-            null
-        )
-
+        val token = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE).getString(SHARED_PREF_USER_TOKEN, null)
+        Log.d("token",token.toString())
         if(token != null){
             Log.d("token",token)
             /* Start activities */
@@ -76,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         credentials.put("username", username)
         credentials.put("password", password)
 
-        WebClient().authenticate(
+        WebClient(applicationContext).authenticate(
             credentials,
             { response ->
                 Log.d("response",response.toString())
@@ -100,8 +97,7 @@ class LoginActivity : AppCompatActivity() {
             },
             { error ->
                 showMsg("Invalid credentials")
-            },
-            applicationContext)
+            })
     }
 
     /**

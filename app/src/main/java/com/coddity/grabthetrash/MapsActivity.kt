@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -21,6 +22,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.coddity.grabthetrash.web.WebClient
+import org.json.JSONArray
 import java.util.*
 
 
@@ -28,6 +31,7 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap
 
     private lateinit var mMap: GoogleMap
     private lateinit var lastLocation: Location
+    private var binCoordinates: JSONArray? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -39,6 +43,15 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        /** Get bin coordinates **/
+        WebClient(applicationContext).getBinCoordinates { response ->
+            if (response != null) {
+                binCoordinates = JSONArray(response.toString())
+                Log.d("json coordinates",binCoordinates.toString())
+            }
+
+        }
 
         /** Setup bottom navigation **/
         // Get View

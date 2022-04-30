@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
+import com.coddity.grabthetrash.web.WebClient
 
 class HomeActivity : AppCompatActivity() {
 
@@ -21,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var addBinBtn: Button
     private lateinit var textView: TextView
     private lateinit var addItemSelection: ConstraintLayout
+    private lateinit var photo:Bitmap
     private val PIC_ID = 123
 
     private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
@@ -49,6 +50,12 @@ class HomeActivity : AppCompatActivity() {
         })
         addGarbageBtn.setOnClickListener { TrashOnTheWay(textView) }
         addBinBtn.setOnClickListener { }
+
+        addGarbageBtn.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+//                WebClient().addGarbage(photo)
+            }
+        })
 
         /** Setup bottom navigation **/
         // Get View
@@ -81,9 +88,10 @@ class HomeActivity : AppCompatActivity() {
         super.onActivityResult(requestCode,resultCode,data)
         // Match the request 'pic id with requestCode
         if (requestCode == PIC_ID) {
-            val photo = data?.extras
-                ?.get("data") as Bitmap?
+            photo = (data?.extras
+                ?.get("data") as Bitmap?)!!
             pictureImgVw.setImageBitmap(photo)
+            /* Make addBinBtn and addGarbageBtn visible */
             addItemSelection.visibility = View.VISIBLE
             getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(KeyPreferences.PICTURE_IS_TAKEN, 1).apply()
         }
