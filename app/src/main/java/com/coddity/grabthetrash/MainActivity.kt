@@ -21,6 +21,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
 
         getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(KeyPreferences.PICTURE_IS_TAKEN, 0).apply()
-        startActivity(Intent(applicationContext, HomeActivity::class.java))
+        startActivity(Intent(applicationContext, LoginActivity::class.java))
     }
 }

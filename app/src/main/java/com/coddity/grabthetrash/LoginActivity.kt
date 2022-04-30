@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         /* Get authentication Token */
         val token = getSharedPreferences(SHARED_PREF_USER, MODE_PRIVATE).getString(SHARED_PREF_USER_TOKEN, null)
         Log.d("token",token.toString())
-        if(token != null){
+        if (token != null) {
             Log.d("token",token)
             /* Start activities */
             startActivity(Intent(this, HomeActivity::class.java))
