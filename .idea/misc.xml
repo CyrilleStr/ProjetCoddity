@@ -27,8 +27,11 @@
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/menu_navigation.xml" value="0.24010416666666667" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable/selector.xml" value="0.249" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_account.xml" value="0.25" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_home.xml" value="0.25" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_maps.xml" value="0.25" />
       </map>
     </option>
   </component>
