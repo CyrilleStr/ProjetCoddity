@@ -7,7 +7,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import web.PostString
 
 class AccountActivity : AppCompatActivity() {
 

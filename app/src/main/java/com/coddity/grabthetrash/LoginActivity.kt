@@ -11,7 +11,12 @@ import com.android.volley.VolleyLog
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.textfield.TextInputEditText
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
 import org.json.JSONObject
+import web.WebClient
+import java.io.IOException
 import java.io.UnsupportedEncodingException
 
 
@@ -69,15 +74,21 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
+
     /**
      * Get distant server authentication token
      */
-    private fun login() {
+    private fun login(){
+        Log.d("debug","login")
 
-        /* Request declaration */
-        val loginRequest = object : StringRequest(
-            Method.POST, "https://projetcoddityserverside.herokuapp.com/auth/token/",
-            com.android.volley.Response.Listener { response ->
+        /* Format credentials */
+        val credentials = JSONObject()
+        credentials.put("username", username)
+        credentials.put("password", password)
+
+        WebClient().authenticate(
+            credentials,
+            { response ->
                 Log.d("response",response.toString())
                 if (response != null) {
                     /* Get token authentication */
@@ -96,39 +107,11 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 }
-            }, com.android.volley.Response.ErrorListener { error ->
+            },
+            { error ->
                 showMsg("Invalid credentials")
-            }) {
-
-            @Throws(AuthFailureError::class)
-            override fun getBody(): ByteArray? {
-                /* Get and format data body request */
-                val credentials = JSONObject()
-                credentials.put("username", username)
-                credentials.put("password", password)
-                return try {
-                    credentials.toString().toByteArray(charset("utf-8"))
-                } catch (e: UnsupportedEncodingException) {
-                    e.printStackTrace()
-                    VolleyLog.wtf(
-                        "Unsupported Encoding while trying to get the bytes of %s using %s",
-                        credentials.toString(),
-                        "utf-8"
-                    )
-                    null
-                }
-            }
-            override fun getHeaders(): Map<String, String>? {
-                /* Format header : application/json */
-                val headers: HashMap<String, String> = HashMap()
-                headers["Content-Type"] = "application/json"
-                return headers
-            }
-        }
-        /* Execute request */
-        val requestQueue = Volley.newRequestQueue(applicationContext)
-        requestQueue.add(loginRequest)
-
+            },
+            applicationContext)
     }
 
     /**
