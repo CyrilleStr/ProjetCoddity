@@ -12,12 +12,14 @@ import android.util.Log
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import com.coddity.grabthetrash.web.WebClient
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import org.json.JSONArray
 import java.util.concurrent.TimeUnit
 
 
@@ -44,11 +46,21 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
     private var mLocationCallback: LocationCallback? = null
     private var mLocationRequest: LocationRequest? = null
     private var mCurrentLocation: Location? = null
+    private var binCoordinates: JSONArray? = null
 
     /* For Google Fused API */
     override fun onCreate() {
         super.onCreate()
         context = this
+        /** Get bin coordinates **/
+        WebClient(applicationContext).getBinCoordinates { response ->
+            if (response != null) {
+                binCoordinates = JSONArray(response.toString())
+                Log.d("json coordinates",binCoordinates.toString())
+                binCoordinates!!.getJSONArray(1)
+            }
+
+        }
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -236,4 +248,9 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
             mLocationCallback!!, Looper.myLooper()!!
         )
     }
+
+   /* public fun isCloseToBin() {
+
+        if (mCurrentLocation!!.latitude == )
+    }*/
 }
