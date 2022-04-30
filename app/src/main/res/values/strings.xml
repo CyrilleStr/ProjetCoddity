@@ -5,4 +5,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="maps">Maps</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="add_bin">Add a new bin</string>
+    <string name="add_garbage">Add some garbage</string>
 </resources>

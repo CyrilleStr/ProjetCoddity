@@ -6,18 +6,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.AuthFailureError
-import com.android.volley.VolleyLog
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.material.textfield.TextInputEditText
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
 import org.json.JSONObject
 import web.WebClient
-import java.io.IOException
-import java.io.UnsupportedEncodingException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -73,7 +64,6 @@ class LoginActivity : AppCompatActivity() {
         }
         return true
     }
-
 
     /**
      * Get distant server authentication token

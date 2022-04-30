@@ -15,10 +15,12 @@ import java.io.UnsupportedEncodingException
 import javax.xml.transform.ErrorListener
 import com.android.volley.Response.Listener as VolleyListener
 
-
+/**
+ * Interface between client and server
+ */
 class WebClient {
-    private val domainName = "https://projetcoddityserverside.herokuapp.com/"
 
+    private val domainName = "https://projetcoddityserverside.herokuapp.com/"
 
     fun authenticate(credentials: JSONObject, responseListener: VolleyListener<String?>,errorListener:Response.ErrorListener, applicationContext:Context) {
         /* Prepare request */

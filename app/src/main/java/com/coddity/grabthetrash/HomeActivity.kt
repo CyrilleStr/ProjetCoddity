@@ -4,12 +4,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Layout
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -17,7 +19,10 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var pictureImgVw: ImageView
     private lateinit var openCameraBtn: Button
+    private lateinit var addGarbageBtn: Button
+    private lateinit var addBinBtn: Button
     private lateinit var textView: TextView
+    private lateinit var addItemSelection: ConstraintLayout
     private val PIC_ID = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +31,10 @@ class HomeActivity : AppCompatActivity() {
 
         pictureImgVw = findViewById(R.id.imageView)
         openCameraBtn = findViewById(R.id.openCameraBtn)
+        addGarbageBtn = findViewById(R.id.addGarbageBtn)
+        addBinBtn = findViewById(R.id.addBinBtn)
         textView = findViewById(R.id.trashState)
+        addItemSelection = findViewById<ConstraintLayout>(R.id.addItemSelection)
 
         TrashOnTheWay(textView)
 
@@ -71,6 +79,7 @@ class HomeActivity : AppCompatActivity() {
             val photo = data?.extras
                 ?.get("data") as Bitmap?
             pictureImgVw.setImageBitmap(photo)
+            addItemSelection.visibility = View.VISIBLE
         }
     }
 
