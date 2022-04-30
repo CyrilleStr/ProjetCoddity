@@ -40,15 +40,15 @@ class HomeActivity : AppCompatActivity() {
         addItemSelection = findViewById<ConstraintLayout>(R.id.addItemSelection)
 
         TrashOnTheWay(textView)
-        startService(Intent(this, BackgroundLocationUpdateService::class.java))
 
         openCameraBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent,PIC_ID)
-                TrashOnTheWay(textView)
             }
         })
+        addGarbageBtn.setOnClickListener { TrashOnTheWay(textView) }
+        addBinBtn.setOnClickListener { }
 
         /** Setup bottom navigation **/
         // Get View
@@ -97,6 +97,7 @@ class HomeActivity : AppCompatActivity() {
         ) {
             textView.isEnabled = true
             textView.text = "Vous êtes entrain de jeter un déchet"
+            startService(Intent(this, BackgroundLocationUpdateService::class.java))
         }
     }
 }
