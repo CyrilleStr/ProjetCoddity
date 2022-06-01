@@ -2,6 +2,7 @@ package com.coddity.grabthetrash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.widget.Button
@@ -10,9 +11,17 @@ import android.widget.Toast
 
 class AccountActivity : AppCompatActivity() {
 
+    private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
+
+        if (getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getInt(HomeActivity.KeyPreferences.TRASH_ON_THE_WAY, 1)==1) {
+            startService(Intent(this, BackgroundLocationUpdateService::class.java))
+        }else{
+            Log.e("TRASH_ON_THE_WAY","no")
+        }
 
         /** Setup bottom navigation **/
         // Get View

@@ -9,6 +9,7 @@ import android.location.LocationListener
 import android.media.RingtoneManager
 import android.os.*
 import android.util.Log
+import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -20,21 +21,19 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 
-/**
- * Created by Ketan Ramani on 05/11/18.
- */
 class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, LocationListener {
-    /* Declare in manifest
-    <service android:name=".BackgroundLocationUpdateService"/>
-    */
+    private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
+
     private val TAG = "BackgroundLocationUpdateService"
     private val TAG_LOCATION = "TAG_LOCATION"
     private var context: Context? = null
     private var stopService = false
+    private lateinit var textView: TextView
 
     /* For Google Fused API */
     protected var mGoogleApiClient: GoogleApiClient? = null
@@ -52,15 +51,6 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
     override fun onCreate() {
         super.onCreate()
         context = this
-        /** Get bin coordinates **/
-        WebClient(applicationContext).getBinCoordinates { response ->
-            if (response != null) {
-                binCoordinates = JSONArray(response.toString())
-                Log.d("json coordinates",binCoordinates.toString())
-                binCoordinates!!.getJSONArray(1)
-            }
-
-        }
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -70,7 +60,7 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
             override fun run() {
                 try {
                     if (!stopService) {
-                        //Perform your task here
+                        hasReachBin()
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -88,6 +78,7 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
 
     override fun onDestroy() {
         Log.e(TAG, "Service Stopped")
+        getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(HomeActivity.KeyPreferences.TRASH_ON_THE_WAY, 1).apply()
         stopService = true
         if (mFusedLocationClient != null) {
             mFusedLocationClient!!.removeLocationUpdates(mLocationCallback!!)
@@ -130,7 +121,7 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
             builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
         }
         builder.setContentTitle("Your title")
-        builder.setContentText("You are now online")
+        builder.setContentText("Vous êtes entrain de jeter un déchet")
         val notificationSound =
             RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION)
         builder.setSound(notificationSound)
@@ -249,8 +240,28 @@ class BackgroundLocationUpdateService : Service(), GoogleApiClient.ConnectionCal
         )
     }
 
-   /* public fun isCloseToBin() {
+    private fun hasReachBin() {
+        /** Get bin coordinates **/
+            WebClient(applicationContext).getBinCoordinates { response ->
+                if (response != null) {
+                    binCoordinates = JSONArray(response.toString())
+                    Log.d("json coordinates",binCoordinates.toString())
+                    val coord: JSONObject = binCoordinates!!.getJSONObject(0)
+                    Log.e("coordonees!!", coord.get("latitude").toString())
 
-        if (mCurrentLocation!!.latitude == )
-    }*/
+                    val TrashLocation = Location("trash")
+                    TrashLocation.latitude = 47.638313
+                    TrashLocation.longitude = 6.860289
+
+                    val distance = mCurrentLocation!!.distanceTo(TrashLocation)
+
+                    if (distance < 10) { //in meters
+                        stopService=true
+                        //textView = context.findViewById(R.id.trashState)
+
+                    }
+                }
+            }
+    }
+
 }

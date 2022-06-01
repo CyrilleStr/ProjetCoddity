@@ -1,9 +1,12 @@
 package com.coddity.grabthetrash
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -11,7 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.coddity.grabthetrash.web.WebClient
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -27,6 +30,7 @@ class HomeActivity : AppCompatActivity() {
     private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
     object KeyPreferences{
         const val PICTURE_IS_TAKEN = "PICTURE_IS_TAKEN_KEY"
+        const val TRASH_ON_THE_WAY = "TRASH_ON_THE_WAY_KEY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +52,12 @@ class HomeActivity : AppCompatActivity() {
                 startActivityForResult(intent,PIC_ID)
             }
         })
-        addGarbageBtn.setOnClickListener { TrashOnTheWay(textView) }
         addBinBtn.setOnClickListener { }
 
         addGarbageBtn.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
+                getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(KeyPreferences.PICTURE_IS_TAKEN, 1).apply()
+                TrashOnTheWay(textView)
 //                WebClient().addGarbage(photo)
             }
         })
@@ -79,6 +84,8 @@ class HomeActivity : AppCompatActivity() {
             }
             false
         })
+
+
     }
 
     /**
@@ -93,7 +100,7 @@ class HomeActivity : AppCompatActivity() {
             pictureImgVw.setImageBitmap(photo)
             /* Make addBinBtn and addGarbageBtn visible */
             addItemSelection.visibility = View.VISIBLE
-            getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(KeyPreferences.PICTURE_IS_TAKEN, 1).apply()
+            TrashOnTheWay(textView)
         }
     }
 
@@ -105,7 +112,21 @@ class HomeActivity : AppCompatActivity() {
         ) {
             textView.isEnabled = true
             textView.text = "Vous êtes entrain de jeter un déchet"
-            startService(Intent(this, BackgroundLocationUpdateService::class.java))
+            if (!isMyServiceRunning(BackgroundLocationUpdateService::class.java)) {
+                getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).edit().putInt(KeyPreferences.TRASH_ON_THE_WAY, 1).apply()
+                startService(Intent(this, BackgroundLocationUpdateService::class.java))
+            }else{
+                Log.e("TRASH_ON_THE_WAY","no")
+            }
         }
+    }
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 }
