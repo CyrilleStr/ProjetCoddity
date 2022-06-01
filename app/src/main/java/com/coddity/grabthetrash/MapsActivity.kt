@@ -35,8 +35,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -52,11 +50,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap
                 binCoordinates = JSONArray(response.toString())
                 Log.d("json coordinates",binCoordinates.toString())
             }
-        }
-        if (getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE).getInt(HomeActivity.KeyPreferences.TRASH_ON_THE_WAY, 1)==1) {
-            startService(Intent(this, BackgroundLocationUpdateService::class.java))
-        }else{
-            Log.e("TRASH_ON_THE_WAY","no")
         }
 
         /** Setup bottom navigation **/
