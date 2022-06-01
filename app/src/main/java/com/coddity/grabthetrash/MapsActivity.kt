@@ -50,7 +50,6 @@ internal class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap
                 binCoordinates = JSONArray(response.toString())
                 Log.d("json coordinates",binCoordinates.toString())
             }
-
         }
 
         /** Setup bottom navigation **/
