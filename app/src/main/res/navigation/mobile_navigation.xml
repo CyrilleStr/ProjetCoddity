@@ -17,7 +17,7 @@
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
     <fragment
-        android:id="@+id/mapsFragment"
+        android:id="@+id/map"
         android:name="com.sosacy.projetcoddity.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
