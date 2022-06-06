@@ -1,6 +1,7 @@
 package com.sosacy.projetcoddity.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +22,17 @@ private var _binding: FragmentHomeBinding? = null
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
+
+      val homeViewModel =
+            ViewModelProvider(this).get(HomeViewModel::class.java)
+    Log.d("debug","debug1")
     _binding = FragmentHomeBinding.inflate(inflater, container, false)
     val root: View = binding.root
+      Log.d("debug","3")
 
-    return root
+
+      return root
   }
 
 override fun onDestroyView() {
