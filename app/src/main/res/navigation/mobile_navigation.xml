@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.coddity.grabthetrash.ui.home.HomeFragment"
+        android:name="com.sosacy.projetcoddity.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_account"
-        android:name="com.coddity.grabthetrash.ui.dashboard.AccountFragment"
-        android:label="@string/title_account"
-        tools:layout="@layout/fragment_account" />
+        android:id="@+id/navigation_dashboard"
+        android:name="com.sosacy.projetcoddity.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.coddity.grabthetrash.MapsFragment"
+        android:name="com.sosacy.projetcoddity.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
 

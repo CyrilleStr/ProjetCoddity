@@ -1,4 +1,4 @@
-package com.coddity.grabthetrash
+package com.sosacy.projetcoddity
 
 import org.junit.Test
 

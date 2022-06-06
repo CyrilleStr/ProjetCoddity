@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.coddity.grabthetrash">
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    package="com.sosacy.projetcoddity">
 
     <application
         android:allowBackup="true"
@@ -16,13 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GrabTheTrash">
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
+        android:theme="@style/Theme.ProjetCoddity">
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -34,30 +21,9 @@
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
              "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
-        <service android:name=".BackgroundLocationUpdateService"/>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCNVKoYhAKNW8Jplfq6K3YHpfHgwkZPFq0" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".AccountActivity"
-            android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
+            android:value="YOUR_API_KEY" />
 
         <activity
             android:name=".MainActivity"
