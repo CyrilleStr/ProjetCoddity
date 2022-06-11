@@ -29,6 +29,15 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
+    fun loginSucceed(name: String){
+        _loginResult.value =
+            LoginResult(success = LoggedInUserView(displayName = name))
+    }
+
+    fun loginFailed(){
+        _loginResult.value = LoginResult(error = R.string.login_failed)
+    }
+
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)

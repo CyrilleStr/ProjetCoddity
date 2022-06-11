@@ -20,7 +20,7 @@ import com.android.volley.Response.Listener as VolleyListener
  */
 class WebClient (context_p:Context){
 
-    private val domainName = "https://projetcoddityserverside.herokuapp.com/"
+    private val domainName = "https://projectcoddityserverside.herokuapp.com/"
     private val applicationPath = "grabthetrash/"
     private var imageData: ByteArray? = null
     private var token:String? = null
