@@ -26,13 +26,19 @@
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/layout/view_custom_marker.xml" value="0.1390625" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/menu_navigation.xml" value="0.24010416666666667" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable-v24/rounded_rectangle_transparent.xml" value="0.327" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable/selector.xml" value="0.249" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_dashboard.xml" value="0.14635416666666667" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_home.xml" value="0.14635416666666667" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_home.xml" value="0.5" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_login.xml" value="0.18072916666666666" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_maps.xml" value="0.14635416666666667" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_to_validate.xml" value="0.3625" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_valitaded.xml" value="0.3625" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/garbage_list_view.xml" value="0.3625" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/item_view_layout.xml" value="0.3625" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/layout.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/rounded_rectangle.xml" value="0.259" />
         <entry key="app/src/main/res/drawable/rounded_rectangle_transparent.xml" value="0.253" />
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.1490036231884058" />
