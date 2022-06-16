@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.navigation.NavigationView
 import com.sosacy.projetcoddity.data.model.Garbage
+import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.databinding.FragmentValidationBinding
+import com.sosacy.projetcoddity.web.WebClient
 import com.yuyakaido.android.cardstackview.*
 import com.yuyakaido.android.cardstackview.sample.CardStackAdapter
 import com.yuyakaido.android.cardstackview.sample.GarbageDiffCallback
@@ -38,6 +40,7 @@ class ValidationFragment : Fragment(), CardStackListener {
     private val hideHandler = Handler()
 
     private val TAG = ValidationFragment::class.java.simpleName
+
 
     @Suppress("InlinedApi")
     private val hidePart2Runnable = Runnable {
@@ -85,6 +88,9 @@ class ValidationFragment : Fragment(), CardStackListener {
     // onDestroyView.
     private val binding get() = _binding!!
 
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -97,31 +103,20 @@ class ValidationFragment : Fragment(), CardStackListener {
         return binding.root
 
     }
+    var garbages = ArrayList<Garbage>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //setContentView(R.layout.fragment_validation)
         //setupNavigation()
-        setupCardStackView()
-        setupButton()
-
-        visible = true
-
-        val confirmationButton = binding.dummyButton
-
-        dummyButton = binding.dummyButton
-        //fullscreenContent = binding.fullscreenContent
-        //fullscreenContentControls = binding.fullscreenContentControls
-        // Set up the user interaction to manually show or hide the system UI.
-        fullscreenContent?.setOnClickListener { toggle() }
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        confirmationButton?.setOnTouchListener(delayHideTouchListener)
-
-        confirmationButton.setOnClickListener {
-            Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+        WebClient(requireContext()).getGarbagesToRate(){
+            var garbageList = GarbageList()
+            garbageList.parseJson(it!!)
+            garbages = garbageList.all
+            setupCardStackView()
+            setupButton()
+            visible = true
+            Log.d(TAG,"garbage[0]" +  garbages[0].id + " " + garbages[0].latitude)
         }
     }
 
@@ -216,8 +211,7 @@ class ValidationFragment : Fragment(), CardStackListener {
     private val drawerLayout by lazy { requireView().findViewById<DrawerLayout>(R.id.drawer_layout) }
     private val cardStackView by lazy { requireView().findViewById<CardStackView>(R.id.card_stack_view) }
     private val manager by lazy { CardStackLayoutManager(this.requireContext(), this) }
-    private val adapter by lazy { CardStackAdapter(createGarbages()) }
-
+    private val adapter by lazy { CardStackAdapter(garbages) }
 
     var nb = 0
 
@@ -234,14 +228,27 @@ class ValidationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
-        Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
+        var liveGarbage = adapter.getGarbages()[nb].id
+        Log.d(TAG, "id card=" + liveGarbage)
+        updateBtnView(nb+1)
+        Log.d("CardStackView", "onCardSwiped nº$nb id=$liveGarbage p = ${manager.topPosition}, d = $direction")
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
+        }
+        nb++
+        if (nb==adapter.getGarbages().size){
+            Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
         }
     }
 
     override fun onCardRewound() {
         Log.d("CardStackView", "onCardRewound: ${manager.topPosition}")
+
+        updateBtnView(nb+1)
+        nb--
+        var liveGarbage = adapter.getGarbages()[nb].id
+        Log.d(TAG, "id card=" + liveGarbage)
+
     }
 
     override fun onCardCanceled() {
@@ -257,12 +264,8 @@ class ValidationFragment : Fragment(), CardStackListener {
         val textView = view.findViewById<TextView>(R.id.item_name)
         Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
         var nbTotal = adapter.getGarbages().size
-        nb++
 
         Log.d(TAG, "Nb of Card($position) = $nb/$nbTotal")
-        if (nb==nbTotal){
-            Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
-        }
     }
 
     /*private fun setupNavigation() {
@@ -295,8 +298,26 @@ class ValidationFragment : Fragment(), CardStackListener {
         initialize()
     }
 
+    private fun updateBtnView(value:Int){
+        val rewind = requireView().findViewById<View>(R.id.rewind_button)
+        if(value>0){
+            rewind.setVisibility(View.VISIBLE);
+        }
+        if(value==0){
+            rewind.setVisibility(View.INVISIBLE);
+        }
+        if (value==adapter.getGarbages().size){
+            Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+        }
+    }
+
     private fun setupButton() {
+
+        val rewind = requireView().findViewById<View>(R.id.rewind_button)
+        rewind.setVisibility(View.INVISIBLE);
+
         val skip = requireView().findViewById<View>(R.id.skip_button)
+
         skip.setOnClickListener {
             val setting = SwipeAnimationSetting.Builder()
                 .setDirection(Direction.Left)
@@ -305,9 +326,23 @@ class ValidationFragment : Fragment(), CardStackListener {
                 .build()
             manager.setSwipeAnimationSetting(setting)
             cardStackView.swipe()
+
+            var liveGarbage = adapter.getGarbages()[nb].id - 1
+            Log.d(TAG, "id card=" + liveGarbage)
+
+            if(nb>0){
+                rewind.setVisibility(View.VISIBLE);
+            }
+            if(nb==0){
+                rewind.setVisibility(View.INVISIBLE);
+            }
+            if (nb==adapter.getGarbages().size){
+                Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+            }
+
+
         }
 
-        val rewind = requireView().findViewById<View>(R.id.rewind_button)
         rewind.setOnClickListener {
             val setting = RewindAnimationSetting.Builder()
                 .setDirection(Direction.Bottom)
@@ -316,6 +351,17 @@ class ValidationFragment : Fragment(), CardStackListener {
                 .build()
             manager.setRewindAnimationSetting(setting)
             cardStackView.rewind()
+
+            Log.d(TAG, "nb=" + nb)
+            if(nb>0){
+                rewind.setVisibility(View.VISIBLE);
+            }
+            if(nb==0){
+                rewind.setVisibility(View.INVISIBLE);
+            }
+            if (nb==adapter.getGarbages().size){
+                Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+            }
         }
 
         val like = requireView().findViewById<View>(R.id.like_button)
@@ -327,6 +373,9 @@ class ValidationFragment : Fragment(), CardStackListener {
                 .build()
             manager.setSwipeAnimationSetting(setting)
             cardStackView.swipe()
+
+            Log.d(TAG, "nb=" + nb)
+
         }
     }
 

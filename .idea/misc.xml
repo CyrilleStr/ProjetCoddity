@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.3287037037037037" />
         <entry key="..\:/ProjetCoddity/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/ProjetCoddity/app/src/main/res/layout/fragment_dashboard.xml" value="0.4" />
         <entry key="..\:/ProjetCoddity/app/src/main/res/layout/fragment_home.xml" value="0.2" />
@@ -26,33 +27,31 @@
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/layout/view_custom_marker.xml" value="0.1390625" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/menu_navigation.xml" value="0.24010416666666667" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable-v24/rounded_rectangle_transparent.xml" value="0.327" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable/selector.xml" value="0.249" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_history.xml" value="0.15555555555555556" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_home.xml" value="0.33" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_login.xml" value="0.18072916666666666" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_maps.xml" value="0.14635416666666667" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_to_throw.xml" value="0.15555555555555556" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_to_validate.xml" value="0.3625" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_valitaded.xml" value="0.3625" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/garbage_list_view.xml" value="0.3625" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/item_view_layout.xml" value="0.3625" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/layout.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable-v24/gradation_black.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable-v24/ic_dashboard_black_24dp.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable-v24/ic_home_black_24dp.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable-v24/like_green_24dp.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable-v24/like_white_120dp.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable-v24/overlay_black.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable-v24/rewind_blue_24dp.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable-v24/skip_red_24dp.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable-v24/skip_white_120dp.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.252" />
         <entry key="app/src/main/res/drawable/rounded_rectangle.xml" value="0.259" />
         <entry key="app/src/main/res/drawable/rounded_rectangle_transparent.xml" value="0.253" />
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.1490036231884058" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.18614130434782608" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.18614130434782608" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19138657934963704" />
-        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.4320779109346694" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.14764492753623187" />
-        <entry key="app/src/main/res/layout/fragment_validation.xml" value="0.15723571777343753" />
+        <entry key="app/src/main/res/layout/fragment_validation.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_valitaded.xml" value="0.16802536231884058" />
-        <entry key="app/src/main/res/layout/garbage_item.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/garbage_item.xml" value="0.1581895468891531" />
         <entry key="app/src/main/res/layout/garbage_list_view.xml" value="0.16802536231884058" />
       </map>
     </option>
@@ -62,5 +61,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
   </component>
 </project>
