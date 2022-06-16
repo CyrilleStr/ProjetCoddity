@@ -1,5 +1,6 @@
 package com.sosacy.projetcoddity.ui.dashboard
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ class ToThrowFragment : Fragment() {
     private lateinit var loading:ProgressBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var currentView: View
+    private lateinit var applicationContext:Context
 
 
     override fun onCreateView(
@@ -39,6 +41,7 @@ class ToThrowFragment : Fragment() {
         loading = view.findViewById(R.id.loading)
         recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
         currentView = view
+        applicationContext = this.requireContext()
 
         /* Retrieve data from server */
         retrieveDataFromServer()
@@ -68,7 +71,7 @@ class ToThrowFragment : Fragment() {
 
             /* Add garbages on the view */
             if (garbageList.all.size > 0)
-                recyclerView.adapter = GarbageAdapter(garbageList.all)
+                recyclerView.adapter = GarbageAdapter(garbageList.all,this.requireActivity())
 
             /* Update layout */
             var loading = currentView.findViewById<ProgressBar>(R.id.loading)

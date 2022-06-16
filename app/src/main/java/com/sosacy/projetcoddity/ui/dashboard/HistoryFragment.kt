@@ -64,7 +64,7 @@ class HistoryFragment : Fragment() {
 
             /* Add garbages on the view */
             if (garbageList.all.size > 0)
-                recyclerView.adapter = GarbageAdapter(garbageList.all)
+                recyclerView.adapter = GarbageAdapter(garbageList.all, this.requireActivity())
 
             /* Hide progress bar */
             var loading = currentView.findViewById<ProgressBar>(R.id.loading)

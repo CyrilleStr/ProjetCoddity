@@ -2,6 +2,7 @@ package com.sosacy.projetcoddity.ui.adapter
 
 import com.sosacy.projetcoddity.R
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +10,36 @@ import android.view.ViewGroup
 import com.sosacy.projetcoddity.data.model.Garbage
 
 import android.database.DataSetObserver
+import android.location.Location
 import android.widget.*
-import java.util.ArrayList
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 
 import androidx.recyclerview.widget.RecyclerView
 import com.github.kittinunf.fuel.core.Progress
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.sosacy.projetcoddity.ui.home.HomeFragment
+import com.sosacy.projetcoddity.web.WebClient
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.*
 
 class GarbageAdapter(
     var garbageList: ArrayList<Garbage>,
+    var activity:FragmentActivity
 ) : RecyclerView.Adapter<GarbageAdapter.ViewHolder>() {
+
+    //location
+    private lateinit var lastLocation: Location
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var binCoordinates: JSONArray? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.garbage_list_view, parent, false)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.applicationContext) //location
         return ViewHolder(view)
     }
 
@@ -34,6 +52,9 @@ class GarbageAdapter(
         holder.throwBtn.setOnClickListener(){
             holder.progressBar.visibility = View.VISIBLE
             holder.throwBtn.visibility = View.INVISIBLE
+
+            checkLocation(holder)
+
         }
     }
 
@@ -47,5 +68,58 @@ class GarbageAdapter(
         val coordinatesTextview: TextView = itemView.findViewById(R.id.coordinatesTextview)
         val throwBtn: Button = itemView.findViewById(R.id.throwBtn)
         val progressBar: ProgressBar = itemView.findViewById(R.id.loading_garbage_list_view)
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val REQUEST_CHECK_SETTINGS = 2
+        private const val PLACE_PICKER_REQUEST = 3
+    }
+
+    private fun checkLocation(holder: ViewHolder) {
+        if (ActivityCompat.checkSelfPermission(activity.applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                GarbageAdapter.LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(activity) { location ->
+            if (location != null)
+                lastLocation = location
+        }
+
+        WebClient(activity.applicationContext).getBinCoordinates { response ->
+            if (response != null) {
+                binCoordinates = JSONArray(response.toString())
+                Log.d("json coordinates",binCoordinates.toString())
+
+                for (i in 0 until binCoordinates!!.length()){
+                    println("Vérification coordonnées de garbage correspond à poubelle $i")
+                    val coord: JSONObject = binCoordinates!!.getJSONObject(i)
+                    Log.e("coordonees!! latitude", coord.get("latitude").toString())
+                    Log.e("coordonees!! longitude", coord.get("longitude").toString())
+
+                    var trash_loc = Location("")
+                    trash_loc.latitude = coord.get("latitude") as Double
+                    trash_loc.longitude= coord.get("longitude") as Double
+
+                    val distance = 0.00000000000015
+                    if (lastLocation.latitude < trash_loc.latitude+distance
+                        && lastLocation.latitude > trash_loc.latitude-distance
+                        && lastLocation.longitude < trash_loc.longitude+distance
+                        && lastLocation.longitude > trash_loc.longitude-distance){
+
+                            holder.progressBar.visibility = View.GONE
+                            holder.throwBtn.visibility = View.GONE
+                    }
+
+                }
+
+            }
+        }
+
     }
 }
