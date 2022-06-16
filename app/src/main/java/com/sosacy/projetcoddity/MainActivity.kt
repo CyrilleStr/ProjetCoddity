@@ -41,14 +41,27 @@ class MainActivity : AppCompatActivity() {
         navView = binding.navView
 
         /* Fonction pour samy */
-        WebClient(applicationContext).getGarbagesToRate() {
-            var garbageList = GarbageList()
-            garbageList.parseJson(it.toString())
-            println("garbageList")
-            for (i in 0 until garbageList.all.size) {
-                println(garbageList.all[i].id)
-            }
-        }
+//        var webapp = WebClient(applicationContext)
+//        webapp.getGarbagesToRate() {
+//            var garbageList = GarbageList()
+//            garbageList.parseJson(it.toString())
+//            println("garbageList")
+//            for (i in 0 until garbageList.all.size) {
+//                println(garbageList.all[i].id)
+//            }
+//        }
+//
+//        webapp.throwGarbage(47
+//        ) {
+//            println("throwGarbage")
+//            println(it.toString())
+//        }
+//
+//        webapp.rateGarbage(50,2){
+//            println("rateGarbage")
+//            println(it.toString())
+//        }
+
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)

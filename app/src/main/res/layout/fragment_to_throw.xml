@@ -9,11 +9,23 @@
     tools:context="ui.dashboard.ToThrowFragment">
 
     <!--Add recycler view to main activity-->
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/garbage_list_to_throw" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/garbage_list_to_throw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/garbage_list_view"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-343dp"
+        tools:listitem="@layout/garbage_list_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

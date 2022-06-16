@@ -20,48 +20,100 @@ class WebClient(context_p: Context) {
     private var imageData: ByteArray? = null
     private var token: String? = null
     private var userId: String? = null
-    private var contextApp: Context = context_p
+    private var applicationContext: Context = context_p
 
     init {
         /* Get token */
         this.token =
-            this.contextApp?.getSharedPreferences(
+            this.applicationContext?.getSharedPreferences(
                 "SHARED_PREF_USER",
                 AppCompatActivity.MODE_PRIVATE
             )
                 ?.getString("SHARED_PREF_USER_TOKEN", null)
         this.userId =
-            this.contextApp?.getSharedPreferences(
+            this.applicationContext?.getSharedPreferences(
                 "SHARED_PREF_USER",
                 AppCompatActivity.MODE_PRIVATE
             )
                 ?.getString("SHARED_PREF_USER_ID", null)
     }
 
+    fun getGarbagesThrown(responseListener: VolleyListener<String?>) {
+        getObjectRequest(responseListener, "get-garbage-thrown/")
+    }
+
+    fun getGarbagesToThrow(responseListener: VolleyListener<String?>) {
+        getObjectRequest(responseListener, "get-garbages-to-throw/")
+    }
+
+    fun getGarbagesToRate(responseListener: VolleyListener<String?>) {
+        getObjectRequest(responseListener, "garbages-to-rate/")
+    }
+
+
     fun getBinCoordinates(responseListener: VolleyListener<String?>) {
+        getObjectRequest(responseListener, "get-coordinates/")
+    }
 
-        /* Prepare request */
-        val request = object : StringRequest(
-            com.android.volley.Request.Method.GET,
-            domainName + applicationPath + "get-coordinates/",
-            responseListener,
-            Response.ErrorListener {
+    fun throwGarbage(
+        garbageId: Int,
+        responseListener: Response.Listener<String>
+    ) {
+        val body = JSONObject()
+        body.put("garbage_id", garbageId.toString())
+        addObjectRequest(
+            body, "throw-garbage/", responseListener,
+            {
                 println("error is: $it")
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
-                /* Format header : application/json */
-                val headers: HashMap<String, String> = HashMap()
-                headers["Content-Type"] = "application/json"
-                headers["Authorization"] = "Token $token"
-                return headers
-            }
-        }
-        Log.d("request", request.toString())
+            },
+            applicationContext
+        )
+    }
 
-        /* Execute request */
-        val requestQueue = Volley.newRequestQueue(this.contextApp)
-        requestQueue.add(request)
+    fun rateGarbage(
+        garbageId: Int,
+        note:Int,
+        responseListener: Response.Listener<String>
+    ) {
+        val body = JSONObject()
+        body.put("garbage_id", garbageId.toString())
+        body.put("note", note.toString())
+        addObjectRequest(
+            body, "rate-garbage/", responseListener,
+            {
+                println("error is: $it")
+            },
+            applicationContext
+        )
+    }
+
+    fun addGarbage(
+        latitude: String,
+        longitude: String,
+        responseListener: Response.Listener<String>,
+        errorListener: Response.ErrorListener
+    ) {
+        var body = JSONObject()
+        body.put("owner", userId)
+        body.put("latitude", latitude)
+        body.put("longitude", longitude)
+        /* Make request */
+        addObjectRequest(body, "add-garbage/", responseListener, errorListener, applicationContext)
+    }
+
+    fun addBin(
+        latitude: String,
+        longitude: String,
+        responseListener: Response.Listener<String>,
+        errorListener: Response.ErrorListener,
+        applicationContext: Context
+    ) {
+        val body = JSONObject()
+        body.put("owner", userId)
+        body.put("latitude", latitude)
+        body.put("longitude", longitude)
+        /* Make request */
+        addObjectRequest(body, "add-bin/", responseListener, errorListener, applicationContext)
     }
 
     fun authenticate(
@@ -101,23 +153,23 @@ class WebClient(context_p: Context) {
         Log.d("request", request.toString())
 
         /* Execute request */
-        val requestQueue = Volley.newRequestQueue(this.contextApp)
+        val requestQueue = Volley.newRequestQueue(this.applicationContext)
         requestQueue.add(request)
     }
 
-    fun getGarbagesThrown(responseListener: VolleyListener<String?>) {
+    private fun getObjectRequest(responseListener: VolleyListener<String?>, path: String) {
 
         /* Prepare request */
         val request = object : StringRequest(
             com.android.volley.Request.Method.GET,
-            domainName + applicationPath + "get-garbage-thrown/",
+            domainName + applicationPath + path,
             responseListener,
             Response.ErrorListener {
                 println("error is: $it")
             }) {
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String>? {
-                /* Format header : application/json */
+                /* Format header : content type + authorization token */
                 val headers: HashMap<String, String> = HashMap()
                 headers["Content-Type"] = "application/json"
                 headers["Authorization"] = "Token $token"
@@ -127,93 +179,11 @@ class WebClient(context_p: Context) {
         Log.d("request", request.toString())
 
         /* Execute request */
-        val requestQueue = Volley.newRequestQueue(this.contextApp)
+        val requestQueue = Volley.newRequestQueue(this.applicationContext)
         requestQueue.add(request)
     }
 
-    fun getGarbagesToThrow(responseListener: VolleyListener<String?>) {
-
-        /* Prepare request */
-        val request = object : StringRequest(
-            com.android.volley.Request.Method.GET,
-            domainName + applicationPath + "get-garbages-to-throw/",
-            responseListener,
-            Response.ErrorListener {
-                println("error is: $it")
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
-                /* Format header : application/json */
-                val headers: HashMap<String, String> = HashMap()
-                headers["Content-Type"] = "application/json"
-                headers["Authorization"] = "Token $token"
-                return headers
-            }
-        }
-        Log.d("request", request.toString())
-
-        /* Execute request */
-        val requestQueue = Volley.newRequestQueue(this.contextApp)
-        requestQueue.add(request)
-    }
-
-    fun getGarbagesToRate(responseListener: VolleyListener<String?>) {
-
-        /* Prepare request */
-        val request = object : StringRequest(
-            com.android.volley.Request.Method.GET,
-            domainName + applicationPath + "garbages-to-rate/",
-            responseListener,
-            Response.ErrorListener {
-                println("error is: $it")
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
-                /* Format header : application/json */
-                val headers: HashMap<String, String> = HashMap()
-                headers["Content-Type"] = "application/json"
-                headers["Authorization"] = "Token $token"
-                return headers
-            }
-        }
-        Log.d("request", request.toString())
-
-        /* Execute request */
-        val requestQueue = Volley.newRequestQueue(this.contextApp)
-        requestQueue.add(request)
-    }
-
-    fun addGarbage(
-        latitude: String,
-        longitude: String,
-        responseListener: Response.Listener<String>,
-        errorListener: Response.ErrorListener,
-        applicationContext: Context
-    ) {
-        var body = JSONObject()
-        body.put("owner", userId)
-        body.put("latitude", latitude)
-        body.put("longitude", longitude)
-        /* Make request */
-        addObjectRequest(body, "add-garbage/", responseListener, errorListener, applicationContext)
-    }
-
-    fun addBin(
-        latitude: String,
-        longitude: String,
-        responseListener: Response.Listener<String>,
-        errorListener: Response.ErrorListener,
-        applicationContext: Context
-    ) {
-        val body = JSONObject()
-        body.put("owner", userId)
-        body.put("latitude", latitude)
-        body.put("longitude", longitude)
-        /* Make request */
-        addObjectRequest(body, "add-bin/", responseListener, errorListener, applicationContext)
-    }
-
-    fun addObjectRequest(
+    private fun addObjectRequest(
         body: JSONObject,
         path: String,
         responseListener: Response.Listener<String>,
@@ -253,7 +223,7 @@ class WebClient(context_p: Context) {
         Log.d("request", request.toString())
 
         /* Execute request */
-        val requestQueue = Volley.newRequestQueue(this.contextApp)
+        val requestQueue = Volley.newRequestQueue(this.applicationContext)
         requestQueue.add(request)
     }
 }

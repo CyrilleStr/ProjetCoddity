@@ -78,7 +78,7 @@ class HomeFragment : Fragment() {
         /* Add button listeners */
         openCameraBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                // Check Camera
+                // Check Cameraf
                 if (context.packageManager.hasSystemFeature(
                         PackageManager.FEATURE_CAMERA
                     )
@@ -113,7 +113,7 @@ class HomeFragment : Fragment() {
                         msgTextView.setText("Connection error, try again")
                         msgTextView.visibility = View.VISIBLE
                         openCameraBtn.visibility = View.VISIBLE
-                    }, context
+                    }
                 )
             }
         })

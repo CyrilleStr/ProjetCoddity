@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sosacy.projetcoddity.R
@@ -40,6 +41,10 @@ class HistoryFragment : Fragment() {
                 println(recyclerView)
                 recyclerView.adapter = GarbageAdapter(garbageList.all)
             }
+
+            /* Hide progress bar */
+            var loading = view.findViewById<ProgressBar>(R.id.loading)
+            loading.visibility = View.GONE
         }
     }
 }
