@@ -15,7 +15,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -23,13 +22,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import com.google.gson.Gson
-import com.sosacy.projetcoddity.MapsFragment
 import com.sosacy.projetcoddity.data.LocalStorage
-import com.sosacy.projetcoddity.data.model.BinList
-import com.sosacy.projetcoddity.data.model.GarbageList
-import com.sosacy.projetcoddity.data.model.Garbage
 import com.sosacy.projetcoddity.databinding.FragmentHomeBinding
 import com.sosacy.projetcoddity.web.WebClient
 import org.json.JSONObject
