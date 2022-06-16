@@ -1,8 +1,10 @@
 package com.sosacy.projetcoddity.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -15,10 +17,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import com.sosacy.projetcoddity.MapsFragment
 import com.sosacy.projetcoddity.data.model.BinList
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.data.model.Garbage
@@ -29,6 +36,7 @@ import org.json.JSONObject
 
 class HomeFragment : Fragment() {
 
+    private lateinit var applicationContext: Context
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -48,6 +56,10 @@ class HomeFragment : Fragment() {
     private lateinit var msgTextView: TextView
     private lateinit var addItemSelection: ConstraintLayout
     private lateinit var applicationActivity: FragmentActivity
+
+    //location
+    private lateinit var lastLocation: Location
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,19 +85,22 @@ class HomeFragment : Fragment() {
         addBinBtn = binding.addBinBtn
         addItemSelection = binding.addItemSelection
         msgTextView = binding.msgTextView
-        val context = this.requireActivity().applicationContext
+        applicationContext = this.requireActivity().applicationContext
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext) //location
 
         /* Add button listeners */
         openCameraBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 // Check Cameraf
-                if (context.packageManager.hasSystemFeature(
+                if (applicationContext.packageManager.hasSystemFeature(
                         PackageManager.FEATURE_CAMERA
                     )
                 ) {
                     // Open default camera
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     startActivityForResult(intent, PIC_ID)
+                    getLocation()
                 } else {
                     Toast.makeText(context, "Camera not supported", Toast.LENGTH_LONG).show()
                 }
@@ -97,7 +112,7 @@ class HomeFragment : Fragment() {
                 addItemSelection.visibility = View.INVISIBLE
                 pictureImgVw.visibility = View.INVISIBLE
                 Log.d("debug", "on click addGarbageBtn")
-                WebClient(context).addGarbage(
+                WebClient(applicationContext).addGarbage(
                     "47.647063", "6.875451",
                     {
                         /* Manage view animation */
@@ -181,5 +196,35 @@ class HomeFragment : Fragment() {
         prefsEditor.putString(SHARED_PREF_GARBAGES, json1)
         prefsEditor.commit()
     }
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val REQUEST_CHECK_SETTINGS = 2
+        private const val PLACE_PICKER_REQUEST = 3
+    }
 
+    /*
+     * Permit the location when we take a picture
+     */
+    
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                HomeFragment.LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return
+        }
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
+            // Got last known location. In some rare situations this can be null.
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+
+                Log.e("coordonees!! latitude", lastLocation.latitude.toString())
+                Log.e("coordonees!! longitude", lastLocation.longitude.toString())
+            }
+        }
+    }
 }
