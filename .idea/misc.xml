@@ -47,7 +47,14 @@
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.1490036231884058" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.18614130434782608" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.18614130434782608" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12335359675785208" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19138657934963704" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/fragment_validation.xml" value="0.15723571777343753" />
+        <entry key="app/src/main/res/layout/fragment_valitaded.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/garbage_item.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/garbage_list_view.xml" value="0.16802536231884058" />
       </map>
     </option>
   </component>

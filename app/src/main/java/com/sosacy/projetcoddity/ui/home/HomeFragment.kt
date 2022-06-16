@@ -170,18 +170,18 @@ class HomeFragment : Fragment() {
     /*
      * Permit the location when we take a picture
      */
-    
+
     private fun getLocation() {
         if (ActivityCompat.checkSelfPermission(applicationContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.requireActivity(),
+            ActivityCompat.requestPermissions(applicationActivity,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                 HomeFragment.LOCATION_PERMISSION_REQUEST_CODE
             )
             return
         }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
+        fusedLocationClient.lastLocation.addOnSuccessListener(applicationActivity) { location ->
             // Got last known location. In some rare situations this can be null.
             if (location != null)
                 lastLocation = location
