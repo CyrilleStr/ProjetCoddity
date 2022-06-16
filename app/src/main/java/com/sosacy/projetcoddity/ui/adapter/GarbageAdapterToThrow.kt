@@ -1,35 +1,30 @@
 package com.sosacy.projetcoddity.ui.adapter
 
 import com.sosacy.projetcoddity.R
-import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sosacy.projetcoddity.data.model.Garbage
-
-import android.database.DataSetObserver
 import android.location.Location
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
-
 import androidx.recyclerview.widget.RecyclerView
-import com.github.kittinunf.fuel.core.Progress
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import com.sosacy.projetcoddity.ui.home.HomeFragment
 import com.sosacy.projetcoddity.web.WebClient
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
+import com.android.volley.Response
 
-class GarbageAdapter(
+class GarbageAdapterToThrow(
     var garbageList: ArrayList<Garbage>,
-    var activity:FragmentActivity
-) : RecyclerView.Adapter<GarbageAdapter.ViewHolder>() {
+    var activity: FragmentActivity,
+    var responseListener: Response.Listener<String>
+) : RecyclerView.Adapter<GarbageAdapterToThrow.ViewHolder>() {
 
     //location
     private lateinit var lastLocation: Location
@@ -38,8 +33,9 @@ class GarbageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.garbage_list_view, parent, false)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.applicationContext) //location
+            .inflate(R.layout.garbage_list_view_to_throw, parent, false)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(activity.applicationContext) //location
         return ViewHolder(view)
     }
 
@@ -48,13 +44,13 @@ class GarbageAdapter(
         val garbage = garbageList[position]
         holder.imageView.setImageResource(R.drawable.trash)
         holder.titleTextview.text = "Garbage n°" + garbage.id.toString()
-        holder.coordinatesTextview.text = "(" + garbage.latitude.toString() + ", " + garbage?.longitude.toString() + ")"
-        holder.throwBtn.setOnClickListener(){
+        holder.coordinatesTextview.text =
+            "(" + garbage.latitude.toString() + ", " + garbage?.longitude.toString() + ")"
+        holder.progressBar.visibility = View.GONE
+        holder.throwBtn.setOnClickListener() {
             holder.progressBar.visibility = View.VISIBLE
             holder.throwBtn.visibility = View.INVISIBLE
-
-            checkLocation(holder)
-
+            checkLocation(holder, position)
         }
     }
 
@@ -76,13 +72,21 @@ class GarbageAdapter(
         private const val PLACE_PICKER_REQUEST = 3
     }
 
-    private fun checkLocation(holder: ViewHolder) {
-        if (ActivityCompat.checkSelfPermission(activity.applicationContext,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity,
+    private fun checkLocation(holder: ViewHolder, position: Int) {
+        if (ActivityCompat.checkSelfPermission(
+                activity.applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                activity,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                GarbageAdapter.LOCATION_PERMISSION_REQUEST_CODE
+                GarbageAdapterToThrow.LOCATION_PERMISSION_REQUEST_CODE
             )
+            println("test")
+            holder.progressBar.visibility = View.GONE
+            holder.throwBtn.visibility = View.VISIBLE
+            holder.throwBtn.text = "Fail"
             return
         }
 
@@ -94,9 +98,8 @@ class GarbageAdapter(
         WebClient(activity.applicationContext).getBinCoordinates { response ->
             if (response != null) {
                 binCoordinates = JSONArray(response.toString())
-                Log.d("json coordinates",binCoordinates.toString())
-
-                for (i in 0 until binCoordinates!!.length()){
+                var garbageThrown = false
+                for (i in 0 until binCoordinates!!.length()) {
                     println("Vérification coordonnées de garbage correspond à poubelle $i")
                     val coord: JSONObject = binCoordinates!!.getJSONObject(i)
                     Log.e("coordonees!! latitude", coord.get("latitude").toString())
@@ -104,18 +107,23 @@ class GarbageAdapter(
 
                     var trash_loc = Location("")
                     trash_loc.latitude = coord.get("latitude") as Double
-                    trash_loc.longitude= coord.get("longitude") as Double
-
-                    val distance = 0.00000000000015
-                    if (lastLocation.latitude < trash_loc.latitude+distance
-                        && lastLocation.latitude > trash_loc.latitude-distance
-                        && lastLocation.longitude < trash_loc.longitude+distance
-                        && lastLocation.longitude > trash_loc.longitude-distance){
-
-                            holder.progressBar.visibility = View.GONE
-                            holder.throwBtn.visibility = View.GONE
+                    trash_loc.longitude = coord.get("longitude") as Double
+                    val distance = 0.0005
+                    if (lastLocation.latitude < trash_loc.latitude + distance
+                        && lastLocation.latitude > trash_loc.latitude - distance
+                        && lastLocation.longitude < trash_loc.longitude + distance
+                        && lastLocation.longitude > trash_loc.longitude - distance
+                    ) {
+                        holder.progressBar.visibility = View.GONE
+                        holder.throwBtn.visibility = View.VISIBLE
+                        garbageThrown = true
+                        WebClient(activity.applicationContext).throwGarbage(garbageList[position].id,responseListener)
                     }
-
+                }
+                if (!garbageThrown) {
+                    holder.progressBar.visibility = View.GONE
+                    holder.throwBtn.visibility = View.VISIBLE
+                    holder.throwBtn.text = "Fail"
                 }
 
             }

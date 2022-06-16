@@ -1,7 +1,6 @@
 package com.sosacy.projetcoddity.ui.dashboard
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sosacy.projetcoddity.R
 import com.sosacy.projetcoddity.data.LocalStorage
 import com.sosacy.projetcoddity.data.model.GarbageList
-import com.sosacy.projetcoddity.ui.adapter.GarbageAdapter
+import com.sosacy.projetcoddity.ui.adapter.GarbageAdapterHistory
+import com.sosacy.projetcoddity.ui.adapter.GarbageAdapterToThrow
 import com.sosacy.projetcoddity.web.WebClient
 
 class HistoryFragment : Fragment() {
@@ -64,7 +64,7 @@ class HistoryFragment : Fragment() {
 
             /* Add garbages on the view */
             if (garbageList.all.size > 0)
-                recyclerView.adapter = GarbageAdapter(garbageList.all, this.requireActivity())
+                recyclerView.adapter = GarbageAdapterHistory(garbageList.all, this.requireActivity())
 
             /* Hide progress bar */
             var loading = currentView.findViewById<ProgressBar>(R.id.loading)
