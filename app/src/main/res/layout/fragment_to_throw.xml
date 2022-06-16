@@ -26,6 +26,6 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-343dp"
-        tools:listitem="@layout/garbage_list_view" />
+        tools:listitem="@layout/garbage_list_view_to_throw" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
