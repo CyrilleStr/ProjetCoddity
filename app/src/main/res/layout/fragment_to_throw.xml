@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:background="#F5F8FD"
     android:layout_height="match_parent"
-    tools:context="ui.dashboard.ToThrowFragment">
+    tools:context="ui.dashboard.ToThrowFragment"
+    android:layout_marginBottom="60dp">
 
     <!--Add recycler view to main activity-->
     <ProgressBar
