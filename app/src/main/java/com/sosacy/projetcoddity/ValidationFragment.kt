@@ -228,15 +228,17 @@ class ValidationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
+        updateBtnView(nb+1)
+
         var liveGarbage = adapter.getGarbages()[nb].id
         Log.d(TAG, "id card=" + liveGarbage)
-        updateBtnView(nb+1)
+
         Log.d("CardStackView", "onCardSwiped nº$nb id=$liveGarbage p = ${manager.topPosition}, d = $direction")
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
         }
         nb++
-        if (nb==adapter.getGarbages().size){
+        if (nb-1==adapter.getGarbages().size){
             Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
         }
     }
