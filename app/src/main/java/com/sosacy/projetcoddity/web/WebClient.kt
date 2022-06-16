@@ -8,15 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.Headers
-import com.github.kittinunf.fuel.gson.jsonBody
+
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.UnsupportedEncodingException
 import com.android.volley.Response.Listener as VolleyListener
-import com.github.kittinunf.fuel.httpGet
 import com.google.gson.Gson
 
 /**
