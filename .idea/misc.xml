@@ -53,6 +53,8 @@
         <entry key="app/src/main/res/layout/fragment_valitaded.xml" value="0.16802536231884058" />
         <entry key="app/src/main/res/layout/garbage_item.xml" value="0.1581895468891531" />
         <entry key="app/src/main/res/layout/garbage_list_view.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/garbage_list_view_history.xml" value="0.1911231884057971" />
+        <entry key="app/src/main/res/layout/garbage_list_view_to_throw.xml" value="0.1911231884057971" />
       </map>
     </option>
   </component>

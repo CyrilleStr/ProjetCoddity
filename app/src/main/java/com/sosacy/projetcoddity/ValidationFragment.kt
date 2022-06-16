@@ -12,10 +12,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -232,6 +229,17 @@ class ValidationFragment : Fragment(), CardStackListener {
 
         var liveGarbage = adapter.getGarbages()[nb].id
         Log.d(TAG, "id card=" + liveGarbage)
+
+        if(direction == Direction.Right){
+            WebClient(requireContext()).rateGarbage(liveGarbage,1){
+                Log.d(TAG, "Card id=" + liveGarbage + " note=" + 1)
+            }
+        }
+        else if(direction == Direction.Left) {
+            WebClient(requireContext()).rateGarbage(liveGarbage,0){
+                Log.d(TAG, "Card id=" + liveGarbage + " note=" + 0)
+            }
+        }
 
         Log.d("CardStackView", "onCardSwiped nº$nb id=$liveGarbage p = ${manager.topPosition}, d = $direction")
         if (manager.topPosition == adapter.itemCount - 5) {
