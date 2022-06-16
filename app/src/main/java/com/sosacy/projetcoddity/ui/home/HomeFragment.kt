@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
+import com.sosacy.projetcoddity.data.model.BinList
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.data.model.Garbage
 import com.sosacy.projetcoddity.databinding.FragmentHomeBinding
@@ -127,7 +128,6 @@ class HomeFragment : Fragment() {
                 garbageAttributes.put("longitude", "254")
             }
         })
-        Log.d("debug", "on view created finish")
     }
 
     override fun onDestroyView() {

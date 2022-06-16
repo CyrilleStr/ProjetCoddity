@@ -1,6 +1,7 @@
 package com.sosacy.projetcoddity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +11,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.gson.Gson
+import com.sosacy.projetcoddity.data.model.BinList
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.databinding.ActivityMainBinding
+import com.sosacy.projetcoddity.web.WebClient
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +43,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         navView = binding.navView
+
+        /* Retrieve data from server */
+        WebClient(applicationContext).getGarbagesToValidate(){
+            var garbageList = GarbageList()
+            garbageList.parseJson(it.toString())
+        }
+
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each

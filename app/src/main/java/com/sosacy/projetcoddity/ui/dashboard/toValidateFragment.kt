@@ -23,7 +23,6 @@ class toValidateFragment : Fragment() {
     private val SHARED_PREF_GARBAGES = "SHARED_PREF_GARBGAES"
     private var _binding: FragmentToValidateBinding? = null
     private val binding get() = _binding!!
-    private var SM: SendMessage? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,30 +48,17 @@ class toValidateFragment : Fragment() {
         )
         val gson = Gson()
         val json: String? = mPrefs.getString(SHARED_PREF_GARBAGES, null)
-        var garbageList: GarbageList = gson.fromJson(json, GarbageList::class.java)
+        var garbageList: GarbageList? = gson.fromJson(json, GarbageList::class.java)
 
         /* Add garbages on the view */
-        println(recyclerView)
-        recyclerView.adapter = GarbageAdapter(garbageList.all)
+        if(garbageList != null){
+            println(recyclerView)
+            recyclerView.adapter = GarbageAdapter(garbageList.all)
 
-        Log.d("size",garbageList.all.size.toString())
-        Log.d("garbageList",garbageList.all[garbageList.all.size-1].latitude.toString())
-        Log.d("garbageList",garbageList.all[garbageList.all.size-1].longitude.toString())
-        Log.d("garbageList",garbageList.all[garbageList.all.size-1].id.toString())
+            Log.d("size",garbageList.all.size.toString())
+            Log.d("garbageList",garbageList.all[garbageList.all.size-1].latitude.toString())
+            Log.d("garbageList",garbageList.all[garbageList.all.size-1].longitude.toString())
+            Log.d("garbageList",garbageList.all[garbageList.all.size-1].id.toString())
+        }
     }
-
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        SM = try {
-//            activity as SendMessage?
-//        } catch (e: ClassCastException) {
-//            throw ClassCastException("Error in retrieving data. Please try again")
-//        }
-//    }
-
-    internal interface SendMessage {
-        fun sendData(message: String?)
-    }
-
-
 }

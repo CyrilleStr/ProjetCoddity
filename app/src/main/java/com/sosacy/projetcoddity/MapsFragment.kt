@@ -177,7 +177,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                             binCoordinates = JSONArray(response.toString())
                             Log.d("json coordinates",binCoordinates.toString())
 
-                            for (i in 1..7){
+                            for (i in 0 until binCoordinates!!.length()){
                                 println("poubelle $i")
                                 val coord: JSONObject = binCoordinates!!.getJSONObject(i)
                                 Log.e("coordonees!! latitude", coord.get("latitude").toString())
