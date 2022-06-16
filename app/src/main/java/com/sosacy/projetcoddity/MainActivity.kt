@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     private fun visibilityNavElements(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.loginFragment -> navView?.visibility = View.GONE
+                R.id.loginFragment,R.id.validationFragement -> navView?.visibility = View.GONE
                 else -> navView?.visibility = View.VISIBLE
             }
         }

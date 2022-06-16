@@ -28,6 +28,15 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_navigation_home"
+            app:destination="@id/validationFragement" />
+    </fragment>
+    <fragment
+        android:id="@+id/validationFragement"
+        android:name="com.sosacy.projetcoddity.ValidationFragment"
+        android:label="fragment_validation"
+        tools:layout="@layout/fragment_validation" >
+        <action
+            android:id="@+id/action_validation_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
 
