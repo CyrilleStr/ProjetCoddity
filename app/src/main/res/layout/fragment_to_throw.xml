@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:background="#F5F8FD"
     android:layout_height="match_parent"
-    tools:context="ui.dashboard.toValidateFragment">
+    tools:context="ui.dashboard.ToThrowFragment">
 
     <!--Add recycler view to main activity-->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/garbage_list"
+        android:id="@+id/garbage_list_to_throw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/garbage_list_view"

@@ -105,12 +105,64 @@ class WebClient(context_p: Context) {
         requestQueue.add(request)
     }
 
-    fun getGarbagesToValidate(responseListener: VolleyListener<String?>) {
+    fun getGarbagesThrown(responseListener: VolleyListener<String?>) {
 
         /* Prepare request */
         val request = object : StringRequest(
             com.android.volley.Request.Method.GET,
-            domainName + applicationPath + "garbages-to-validate/",
+            domainName + applicationPath + "get-garbage-thrown/",
+            responseListener,
+            Response.ErrorListener {
+                println("error is: $it")
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String>? {
+                /* Format header : application/json */
+                val headers: HashMap<String, String> = HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Authorization"] = "Token $token"
+                return headers
+            }
+        }
+        Log.d("request", request.toString())
+
+        /* Execute request */
+        val requestQueue = Volley.newRequestQueue(this.contextApp)
+        requestQueue.add(request)
+    }
+
+    fun getGarbagesToThrow(responseListener: VolleyListener<String?>) {
+
+        /* Prepare request */
+        val request = object : StringRequest(
+            com.android.volley.Request.Method.GET,
+            domainName + applicationPath + "get-garbages-to-throw/",
+            responseListener,
+            Response.ErrorListener {
+                println("error is: $it")
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String>? {
+                /* Format header : application/json */
+                val headers: HashMap<String, String> = HashMap()
+                headers["Content-Type"] = "application/json"
+                headers["Authorization"] = "Token $token"
+                return headers
+            }
+        }
+        Log.d("request", request.toString())
+
+        /* Execute request */
+        val requestQueue = Volley.newRequestQueue(this.contextApp)
+        requestQueue.add(request)
+    }
+
+    fun getGarbagesToRate(responseListener: VolleyListener<String?>) {
+
+        /* Prepare request */
+        val request = object : StringRequest(
+            com.android.volley.Request.Method.GET,
+            domainName + applicationPath + "garbages-to-rate/",
             responseListener,
             Response.ErrorListener {
                 println("error is: $it")

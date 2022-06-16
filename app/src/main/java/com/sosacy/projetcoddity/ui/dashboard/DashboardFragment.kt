@@ -46,14 +46,14 @@ class DashboardFragment : Fragment() {
 
     private fun setUpTap(){
         val adapter = VPAdapter(this.requireActivity())
-        adapter.addFragment(toValidateFragment(),"Garbage to validate")
-        adapter.addFragment(valitadedFragment(),"History")
+        adapter.addFragment(ToThrowFragment(),"Garbage to validate")
+        adapter.addFragment(HistoryFragment(),"History")
 
         viewPager.adapter = adapter
         TabLayoutMediator(tabs,viewPager){
              tab, index ->
             tab.text = when(index){
-                0 -> "Garbage to validate"
+                0 -> "Garbage to throw"
                 1 -> "History"
                 else -> "Error"
             }

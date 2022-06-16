@@ -98,10 +98,9 @@ class HomeFragment : Fragment() {
                 pictureImgVw.visibility = View.INVISIBLE
                 Log.d("debug", "on click addGarbageBtn")
                 WebClient(context).addGarbage(
-                    "156", "54",
+                    "47.647063", "6.875451",
                     {
                         /* Manage view animation */
-                        Log.d("debug", "successListener")
                         msgTextView.setText("Congratulations ! Walk next to the nearest bin referenced on the map to validate the garbage")
                         msgTextView.visibility = View.VISIBLE
                         openCameraBtn.visibility = View.VISIBLE

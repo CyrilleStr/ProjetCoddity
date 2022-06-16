@@ -1,17 +1,13 @@
 package com.sosacy.projetcoddity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.gson.Gson
-import com.sosacy.projetcoddity.data.model.BinList
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.databinding.ActivityMainBinding
 import com.sosacy.projetcoddity.web.WebClient
@@ -44,22 +40,17 @@ class MainActivity : AppCompatActivity() {
 
         navView = binding.navView
 
-        /* Retrieve data from server */
-        WebClient(applicationContext).getGarbagesToValidate(){
+        /* Fonction pour samy */
+        WebClient(applicationContext).getGarbagesToRate() {
             var garbageList = GarbageList()
             garbageList.parseJson(it.toString())
+            println("garbageList")
+            for (i in 0 until garbageList.all.size) {
+                println(garbageList.all[i].id)
+            }
         }
 
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_maps
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         visibilityNavElements(navController)
     }
