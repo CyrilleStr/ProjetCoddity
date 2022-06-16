@@ -24,7 +24,7 @@ class CardStackAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val garbage = garbages[position]
         holder.name.text = "garbage id: ${garbage.id}"
-        holder.city.text = garbage.latitude.toString() + " " + garbage.longitude.toString()
+        holder.city.text = "location: " + garbage.latitude.toString() + " " + garbage.longitude.toString()
         Glide.with(holder.image)
             .load(garbage.randomImage())
             .into(holder.image)
