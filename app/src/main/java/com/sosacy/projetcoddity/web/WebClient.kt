@@ -105,8 +105,7 @@ class WebClient(context_p: Context) {
         latitude: String,
         longitude: String,
         responseListener: Response.Listener<String>,
-        errorListener: Response.ErrorListener,
-        applicationContext: Context
+        errorListener: Response.ErrorListener
     ) {
         val body = JSONObject()
         body.put("owner", userId)

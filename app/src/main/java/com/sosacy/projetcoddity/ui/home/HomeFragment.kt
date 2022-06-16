@@ -26,6 +26,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.sosacy.projetcoddity.MapsFragment
+import com.sosacy.projetcoddity.data.LocalStorage
 import com.sosacy.projetcoddity.data.model.BinList
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.data.model.Garbage
@@ -66,7 +67,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("debug", "onCreateView")
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -76,7 +76,6 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("debug", "onViewCreated")
 
         super.onViewCreated(view, savedInstanceState)
         pictureImgVw = binding.imageView
@@ -86,7 +85,6 @@ class HomeFragment : Fragment() {
         addItemSelection = binding.addItemSelection
         msgTextView = binding.msgTextView
         applicationContext = this.requireActivity().applicationContext
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext) //location
 
         /* Add button listeners */
@@ -111,17 +109,17 @@ class HomeFragment : Fragment() {
             override fun onClick(p0: View?) {
                 addItemSelection.visibility = View.INVISIBLE
                 pictureImgVw.visibility = View.INVISIBLE
-                Log.d("debug", "on click addGarbageBtn")
+                getLocation()
                 WebClient(applicationContext).addGarbage(
-                    "47.647063", "6.875451",
+                    lastLocation.latitude.toString(), lastLocation.longitude.toString(),
                     {
                         /* Manage view animation */
                         msgTextView.setText("Congratulations ! Walk next to the nearest bin referenced on the map to validate the garbage")
                         msgTextView.visibility = View.VISIBLE
                         openCameraBtn.visibility = View.VISIBLE
 
-                        /* Add garbage to local storage */
-                        addGarbageToLocal(JSONObject(it.toString()))
+                        /* Change garbage status : notify that a garbage has been added */
+                        LocalStorage.instance.garbageAdded = true
                     },
                     {
                         Log.d("debug", "errorListener")
@@ -135,7 +133,6 @@ class HomeFragment : Fragment() {
 
         addBinBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                Log.d("debug", "on click addBinBtn")
                 var garbageAttributes = JSONObject()
                 garbageAttributes.put("owner", "1")
                 garbageAttributes.put("latitude", "14")
@@ -164,38 +161,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("debug", "onSaveInstanceState")
-        super.onSaveInstanceState(outState)
-    }
-
-    fun addGarbageToLocal(response: JSONObject) {
-        /* Retrieve stored garbages */
-        val mPrefs = applicationActivity.getSharedPreferences(
-            SHARED_PREF_USER,
-            AppCompatActivity.MODE_PRIVATE
-        )
-        val gson = Gson()
-        val json: String? = mPrefs.getString(SHARED_PREF_GARBAGES, null)
-        var garbages = if (json == null)
-            GarbageList()
-        else
-            gson.fromJson(json, GarbageList::class.java)
-
-        /* Add garbage to garbages */
-        var garbage = Garbage(
-            response.get("id").toString().toInt(),
-            response.get("latitude").toString().toFloat(),
-            response.get("longitude").toString().toFloat(),
-            false,
-            false
-        )
-        garbages.all.add(garbage)
-        var prefsEditor = mPrefs.edit()
-        var json1 = gson.toJson(garbages)
-        prefsEditor.putString(SHARED_PREF_GARBAGES, json1)
-        prefsEditor.commit()
-    }
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
@@ -218,13 +183,8 @@ class HomeFragment : Fragment() {
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
             // Got last known location. In some rare situations this can be null.
-            if (location != null) {
+            if (location != null)
                 lastLocation = location
-                val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-
-                Log.e("coordonees!! latitude", lastLocation.latitude.toString())
-                Log.e("coordonees!! longitude", lastLocation.longitude.toString())
-            }
         }
     }
 }

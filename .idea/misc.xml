@@ -26,6 +26,7 @@
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/layout/view_custom_marker.xml" value="0.1390625" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/soso_/Documents/GitHub/ProjetCoddity/app/src/main/res/menu/menu_navigation.xml" value="0.24010416666666667" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable-v24/rounded_rectangle.xml" value="0.341" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable-v24/rounded_rectangle_transparent.xml" value="0.327" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/drawable/selector.xml" value="0.249" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/activity_home.xml" value="0.25" />
@@ -38,7 +39,7 @@
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_to_throw.xml" value="0.15555555555555556" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_to_validate.xml" value="0.3625" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/fragment_valitaded.xml" value="0.3625" />
-        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/garbage_list_view.xml" value="0.3625" />
+        <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/garbage_list_view.xml" value="0.5" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/item_view_layout.xml" value="0.3625" />
         <entry key="..\:/repositories/ProjetCoddity/app/src/main/res/layout/layout.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/rounded_rectangle.xml" value="0.259" />
