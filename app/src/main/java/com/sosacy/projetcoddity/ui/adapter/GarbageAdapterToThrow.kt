@@ -108,7 +108,7 @@ class GarbageAdapterToThrow(
                     var trash_loc = Location("")
                     trash_loc.latitude = coord.get("latitude") as Double
                     trash_loc.longitude = coord.get("longitude") as Double
-                    val distance = 0.0005
+                    val distance = 0.001
                     if (lastLocation.latitude < trash_loc.latitude + distance
                         && lastLocation.latitude > trash_loc.latitude - distance
                         && lastLocation.longitude < trash_loc.longitude + distance

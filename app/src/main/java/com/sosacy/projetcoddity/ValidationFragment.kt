@@ -86,8 +86,6 @@ class ValidationFragment : Fragment(), CardStackListener {
     private val binding get() = _binding!!
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -100,20 +98,25 @@ class ValidationFragment : Fragment(), CardStackListener {
         return binding.root
 
     }
+
     var garbages = ArrayList<Garbage>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //setContentView(R.layout.fragment_validation)
         //setupNavigation()
-        WebClient(requireContext()).getGarbagesToRate(){
+        WebClient(requireContext()).getGarbagesToRate() {
             var garbageList = GarbageList()
             garbageList.parseJson(it!!)
             garbages = garbageList.all
-            setupCardStackView()
-            setupButton()
-            visible = true
-            Log.d(TAG,"garbage[0]" +  garbages[0].id + " " + garbages[0].latitude)
+            if (garbages.size == 0) {
+                Navigation.findNavController(this.requireView())
+                    .navigate(R.id.action_validation_to_navigation_home)
+            } else {
+                setupCardStackView()
+                setupButton()
+                visible = true
+            }
         }
     }
 
@@ -225,36 +228,39 @@ class ValidationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
-        updateBtnView(nb+1)
+        updateBtnView(nb + 1)
 
         var liveGarbage = adapter.getGarbages()[nb].id
         Log.d(TAG, "id card=" + liveGarbage)
 
-        if(direction == Direction.Right){
-            WebClient(requireContext()).rateGarbage(liveGarbage,1){
+        if (direction == Direction.Right) {
+            WebClient(requireContext()).rateGarbage(liveGarbage, 1) {
                 Log.d(TAG, "Card id=" + liveGarbage + " note=" + 1)
             }
-        }
-        else if(direction == Direction.Left) {
-            WebClient(requireContext()).rateGarbage(liveGarbage,0){
+        } else if (direction == Direction.Left) {
+            WebClient(requireContext()).rateGarbage(liveGarbage, 0) {
                 Log.d(TAG, "Card id=" + liveGarbage + " note=" + 0)
             }
         }
 
-        Log.d("CardStackView", "onCardSwiped nº$nb id=$liveGarbage p = ${manager.topPosition}, d = $direction")
+        Log.d(
+            "CardStackView",
+            "onCardSwiped nº$nb id=$liveGarbage p = ${manager.topPosition}, d = $direction"
+        )
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
         }
         nb++
-        if (nb-1==adapter.getGarbages().size){
-            Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+        if (nb - 1 == adapter.getGarbages().size) {
+            Navigation.findNavController(this.requireView())
+                .navigate(R.id.action_validation_to_navigation_home)
         }
     }
 
     override fun onCardRewound() {
         Log.d("CardStackView", "onCardRewound: ${manager.topPosition}")
 
-        updateBtnView(nb+1)
+        updateBtnView(nb + 1)
         nb--
         var liveGarbage = adapter.getGarbages()[nb].id
         Log.d(TAG, "id card=" + liveGarbage)
@@ -308,16 +314,17 @@ class ValidationFragment : Fragment(), CardStackListener {
         initialize()
     }
 
-    private fun updateBtnView(value:Int){
+    private fun updateBtnView(value: Int) {
         val rewind = requireView().findViewById<View>(R.id.rewind_button)
-        if(value>0){
+        if (value > 0) {
             rewind.setVisibility(View.VISIBLE);
         }
-        if(value==0){
+        if (value == 0) {
             rewind.setVisibility(View.INVISIBLE);
         }
-        if (value==adapter.getGarbages().size){
-            Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+        if (value == adapter.getGarbages().size) {
+            Navigation.findNavController(this.requireView())
+                .navigate(R.id.action_validation_to_navigation_home)
         }
     }
 
@@ -340,14 +347,15 @@ class ValidationFragment : Fragment(), CardStackListener {
             var liveGarbage = adapter.getGarbages()[nb].id - 1
             Log.d(TAG, "id card=" + liveGarbage)
 
-            if(nb>0){
+            if (nb > 0) {
                 rewind.setVisibility(View.VISIBLE);
             }
-            if(nb==0){
+            if (nb == 0) {
                 rewind.setVisibility(View.INVISIBLE);
             }
-            if (nb==adapter.getGarbages().size){
-                Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+            if (nb == adapter.getGarbages().size) {
+                Navigation.findNavController(this.requireView())
+                    .navigate(R.id.action_validation_to_navigation_home)
             }
 
 
@@ -363,14 +371,15 @@ class ValidationFragment : Fragment(), CardStackListener {
             cardStackView.rewind()
 
             Log.d(TAG, "nb=" + nb)
-            if(nb>0){
+            if (nb > 0) {
                 rewind.setVisibility(View.VISIBLE);
             }
-            if(nb==0){
+            if (nb == 0) {
                 rewind.setVisibility(View.INVISIBLE);
             }
-            if (nb==adapter.getGarbages().size){
-                Navigation.findNavController(this.requireView()).navigate(R.id.action_validation_to_navigation_home)
+            if (nb == adapter.getGarbages().size) {
+                Navigation.findNavController(this.requireView())
+                    .navigate(R.id.action_validation_to_navigation_home)
             }
         }
 
@@ -528,9 +537,33 @@ class ValidationFragment : Fragment(), CardStackListener {
 
     private fun createGarbages(): List<Garbage> {
         val garbages = ArrayList<Garbage>()
-        garbages.add(Garbage(id = 1,latitude = 111F, longitude = 000F, discard = false, accepted = false))
-        garbages.add(Garbage(id = 2,latitude = 222F, longitude = 888F, discard = false, accepted = false))
-        garbages.add(Garbage(id = 3,latitude = 333F, longitude = 999F, discard = false, accepted = false))
+        garbages.add(
+            Garbage(
+                id = 1,
+                latitude = 111F,
+                longitude = 000F,
+                discard = false,
+                accepted = false
+            )
+        )
+        garbages.add(
+            Garbage(
+                id = 2,
+                latitude = 222F,
+                longitude = 888F,
+                discard = false,
+                accepted = false
+            )
+        )
+        garbages.add(
+            Garbage(
+                id = 3,
+                latitude = 333F,
+                longitude = 999F,
+                discard = false,
+                accepted = false
+            )
+        )
         return garbages
     }
 }
