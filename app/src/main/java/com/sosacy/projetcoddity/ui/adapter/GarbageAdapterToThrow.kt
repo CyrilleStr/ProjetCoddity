@@ -20,6 +20,13 @@ import org.json.JSONObject
 import java.util.*
 import com.android.volley.Response
 
+/**
+ * Convert garbages object in list view
+ *
+ * @property garbageList
+ * @property activity
+ * @property responseListener
+ */
 class GarbageAdapterToThrow(
     var garbageList: ArrayList<Garbage>,
     var activity: FragmentActivity,
@@ -40,7 +47,7 @@ class GarbageAdapterToThrow(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        // link element view to garbage attribute
         val garbage = garbageList[position]
         holder.imageView.setImageResource(R.drawable.trash)
         holder.titleTextview.text = "Garbage n°" + garbage.id.toString()
@@ -58,20 +65,12 @@ class GarbageAdapterToThrow(
         return garbageList.size
     }
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        val titleTextview: TextView = itemView.findViewById(R.id.titleTextview)
-        val coordinatesTextview: TextView = itemView.findViewById(R.id.coordinatesTextview)
-        val throwBtn: Button = itemView.findViewById(R.id.throwBtn)
-        val progressBar: ProgressBar = itemView.findViewById(R.id.loading_garbage_list_view)
-    }
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-        private const val REQUEST_CHECK_SETTINGS = 2
-        private const val PLACE_PICKER_REQUEST = 3
-    }
-
+    /**
+     * Check location with fusedLocation
+     *
+     * @param holder
+     * @param position
+     */
     private fun checkLocation(holder: ViewHolder, position: Int) {
         if (ActivityCompat.checkSelfPermission(
                 activity.applicationContext,
@@ -97,14 +96,12 @@ class GarbageAdapterToThrow(
 
         WebClient(activity.applicationContext).getBinCoordinates { response ->
             if (response != null) {
+                /** On request reponse **/
+                /* Check if user location is next to a bin */
                 binCoordinates = JSONArray(response.toString())
                 var garbageThrown = false
                 for (i in 0 until binCoordinates!!.length()) {
-                    println("Vérification coordonnées de garbage correspond à poubelle $i")
                     val coord: JSONObject = binCoordinates!!.getJSONObject(i)
-                    Log.e("coordonees!! latitude", coord.get("latitude").toString())
-                    Log.e("coordonees!! longitude", coord.get("longitude").toString())
-
                     var trash_loc = Location("")
                     trash_loc.latitude = coord.get("latitude") as Double
                     trash_loc.longitude = coord.get("longitude") as Double
@@ -129,5 +126,19 @@ class GarbageAdapterToThrow(
             }
         }
 
+    }
+
+    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+        val titleTextview: TextView = itemView.findViewById(R.id.titleTextview)
+        val coordinatesTextview: TextView = itemView.findViewById(R.id.coordinatesTextview)
+        val throwBtn: Button = itemView.findViewById(R.id.throwBtn)
+        val progressBar: ProgressBar = itemView.findViewById(R.id.loading_garbage_list_view)
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val REQUEST_CHECK_SETTINGS = 2
+        private const val PLACE_PICKER_REQUEST = 3
     }
 }

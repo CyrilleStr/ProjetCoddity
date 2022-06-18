@@ -12,18 +12,23 @@ import com.android.volley.Response.Listener as VolleyListener
 
 /**
  * Interface between client and server
+ * Use WebClient methods to send request to the server
+ *
+ * @constructor
+ * Initialize context
+ *
+ * @param context_p application context using this interface
  */
 class WebClient(context_p: Context) {
 
     private val domainName = "https://projectcoddityserverside.herokuapp.com/"
     private val applicationPath = "grabthetrash/"
-    private var imageData: ByteArray? = null
     private var token: String? = null
     private var userId: String? = null
     private var applicationContext: Context = context_p
 
     init {
-        /* Get token */
+        /* Get authentication token */
         this.token =
             this.applicationContext?.getSharedPreferences(
                 "SHARED_PREF_USER",
@@ -38,23 +43,48 @@ class WebClient(context_p: Context) {
                 ?.getString("SHARED_PREF_USER_ID", null)
     }
 
+    /**
+     * Get user thrown garbages
+     *
+     * @param responseListener
+     */
     fun getGarbagesThrown(responseListener: VolleyListener<String?>) {
         getObjectRequest(responseListener, "get-garbage-thrown/")
     }
 
+    /**
+     * Get user garbages to throw
+     *
+     * @param responseListener
+     */
     fun getGarbagesToThrow(responseListener: VolleyListener<String?>) {
         getObjectRequest(responseListener, "get-garbages-to-throw/")
     }
 
+    /**
+     * Get other user garbages to be rated by the current user
+     *
+     * @param responseListener
+     */
     fun getGarbagesToRate(responseListener: VolleyListener<String?>) {
         getObjectRequest(responseListener, "garbages-to-rate/")
     }
 
-
+    /**
+     * Get validated bin coordinates to display on the map
+     *
+     * @param responseListener
+     */
     fun getBinCoordinates(responseListener: VolleyListener<String?>) {
         getObjectRequest(responseListener, "get-coordinates/")
     }
 
+    /**
+     * Notify the server a garbages has been thrown
+     *
+     * @param garbageId
+     * @param responseListener
+     */
     fun throwGarbage(
         garbageId: Int,
         responseListener: Response.Listener<String>
@@ -70,6 +100,13 @@ class WebClient(context_p: Context) {
         )
     }
 
+    /**
+     * Communicate user rate for a specific garbage
+     *
+     * @param garbageId
+     * @param note
+     * @param responseListener
+     */
     fun rateGarbage(
         garbageId: Int,
         note:Int,
@@ -87,6 +124,14 @@ class WebClient(context_p: Context) {
         )
     }
 
+    /**
+     * Add a new garbage to the server
+     *
+     * @param latitude
+     * @param longitude
+     * @param responseListener
+     * @param errorListener
+     */
     fun addGarbage(
         latitude: String,
         longitude: String,
@@ -101,6 +146,14 @@ class WebClient(context_p: Context) {
         addObjectRequest(body, "add-garbage/", responseListener, errorListener, applicationContext)
     }
 
+    /**
+     * Add a new bin to the server
+     *
+     * @param latitude
+     * @param longitude
+     * @param responseListener
+     * @param errorListener
+     */
     fun addBin(
         latitude: String,
         longitude: String,
@@ -115,6 +168,13 @@ class WebClient(context_p: Context) {
         addObjectRequest(body, "add-bin/", responseListener, errorListener, applicationContext)
     }
 
+    /**
+     * Get authentication token
+     *
+     * @param credentials username and password in JSON obejct
+     * @param responseListener on success callback
+     * @param errorListener on error callback
+     */
     fun authenticate(
         credentials: JSONObject,
         responseListener: VolleyListener<String?>,
@@ -156,6 +216,12 @@ class WebClient(context_p: Context) {
         requestQueue.add(request)
     }
 
+    /**
+     * Make a HTTP GET request to the server
+     *
+     * @param responseListener on success callback
+     * @param path end url
+     */
     private fun getObjectRequest(responseListener: VolleyListener<String?>, path: String) {
 
         /* Prepare request */
@@ -182,6 +248,15 @@ class WebClient(context_p: Context) {
         requestQueue.add(request)
     }
 
+    /**
+     * Make a HTTP POST request to the server
+     *
+     * @param body body post request
+     * @param path end url
+     * @param responseListener on success callback
+     * @param errorListener on error callback
+     * @param applicationContext
+     */
     private fun addObjectRequest(
         body: JSONObject,
         path: String,

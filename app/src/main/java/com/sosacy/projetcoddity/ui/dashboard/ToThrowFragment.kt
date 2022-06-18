@@ -1,7 +1,6 @@
 package com.sosacy.projetcoddity.ui.dashboard
 
 import android.content.Context
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,26 +9,20 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.sosacy.projetcoddity.R
 import com.sosacy.projetcoddity.data.LocalStorage
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.ui.adapter.GarbageAdapterToThrow
 import com.sosacy.projetcoddity.web.WebClient
-import org.json.JSONArray
 
 
 class ToThrowFragment : Fragment() {
+    // View
     private lateinit var garbageList: GarbageList
     private lateinit var loading: ProgressBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var currentView: View
     private lateinit var applicationContext: Context
-
-    //location
-    private lateinit var lastLocation: Location
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var binCoordinates: JSONArray? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +33,7 @@ class ToThrowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         /* Initialize fragment */
         recyclerView = view.findViewById(R.id.garbage_list_to_throw)
         loading = view.findViewById(R.id.loading)
@@ -51,6 +45,10 @@ class ToThrowFragment : Fragment() {
         retrieveDataFromServer()
     }
 
+    /**
+     * When the user go back on this fragment, we refresh garbage list if needed
+     *
+     */
     override fun onResume() {
         super.onResume()
 
@@ -68,6 +66,11 @@ class ToThrowFragment : Fragment() {
         }
     }
 
+    /**
+     * Retrieve garbages from server and store it in garbageList
+     * Update layout with the garbages
+     *
+     */
     private fun retrieveDataFromServer() {
         WebClient(requireContext()).getGarbagesToThrow() { response ->
             garbageList = GarbageList()
@@ -85,11 +88,5 @@ class ToThrowFragment : Fragment() {
             loading.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
-    }
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
-        private const val REQUEST_CHECK_SETTINGS = 2
-        private const val PLACE_PICKER_REQUEST = 3
     }
 }

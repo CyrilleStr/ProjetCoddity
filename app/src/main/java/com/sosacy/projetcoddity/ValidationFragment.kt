@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
-import com.google.android.material.navigation.NavigationView
 import com.sosacy.projetcoddity.data.model.Garbage
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.databinding.FragmentValidationBinding

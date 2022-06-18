@@ -49,7 +49,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
          * user has installed Google Play services and returned to the app.
          */
         mMap = googleMap
-       // mMap.getUiSettings().setZoomControlsEnabled(true)
         mMap.setOnMarkerClickListener(this)
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.setOnMarkerClickListener(this)

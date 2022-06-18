@@ -1,12 +1,11 @@
 package com.sosacy.projetcoddity.data.model
 
-import android.util.Log
 import org.json.JSONArray
 
-class GarbageList() {
+class GarbageList{
     var all = ArrayList<Garbage>()
 
-    public fun parseJson(json: String) {
+    fun parseJson(json: String) {
         var garbageList = JSONArray(json.toString())
         for (i in 0 until garbageList.length()) {
             var garbageJson = garbageList.getJSONObject(i)

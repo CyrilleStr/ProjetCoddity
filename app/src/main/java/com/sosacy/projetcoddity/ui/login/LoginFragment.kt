@@ -40,9 +40,6 @@ class LoginFragment : Fragment() {
     private val SHARED_PREF_USER_ID = "SHARED_PREF_USER_ID"
     private val SHARED_PREF_USERNAME = "SHARED_PREF_USERNAME"
     private lateinit var loginView: View
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
