@@ -12,12 +12,23 @@
     android:visibility="visible"
     tools:context=".ui.login.LoginFragment">
 
+
+    <ImageView
+        android:id="@+id/logoView"
+        android:layout_width="332dp"
+        android:layout_height="300dp"
+        app:srcCompat="@drawable/grabthetrashbig"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="276dp"
         android:layout_marginEnd="24dp"
         android:autofillHints="@string/prompt_email"
         android:hint="@string/prompt_email"

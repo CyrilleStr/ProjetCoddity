@@ -30,6 +30,10 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * Used to initialize the map, the current location, and to display bin icons on the map
+ *
+ **/
 class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
@@ -70,15 +74,25 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         mapFragment?.getMapAsync(callback)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
     }
-
+    /**
+     * Used to place the bin icon on the map
+     * @param location of the bin
+     * @param title of the bin
+     **/
     private fun placeMarkerOnMap(location: LatLng, title: String) {
-        // 1
         val markerOptions = MarkerOptions().position(location)
         val icon = BitmapDescriptorFactory.fromBitmap(resizeMapIcons("trash",100,100))
         markerOptions.title(title)
         markerOptions.icon(icon)
         mMap.addMarker(markerOptions)
     }
+
+    /**
+     * Resize the icons of bin displayed on the map
+     * @param iconName of the bin
+     * @param width desired for the icon
+     * @param height desired for the icon
+     **/
     private fun resizeMapIcons(iconName: String?, width: Int, height: Int): Bitmap {
         val imageBitmap = BitmapFactory.decodeResource(
             resources, resources.getIdentifier(
@@ -87,88 +101,40 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         )
         return Bitmap.createScaledBitmap(imageBitmap, width, height, false)
     }
-    fun getBitmapDescriptorFromVector(context: Context, @DrawableRes vectorDrawableResourceId: Int): BitmapDescriptor? {
 
-        val vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId)
-        val bitmap = Bitmap.createBitmap(vectorDrawable!!.intrinsicWidth, vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        vectorDrawable.draw(canvas)
-
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
-    fun getRandomLocation(point: Location, radius: Int): LatLng {
-        val randomPoints: MutableList<LatLng> = ArrayList()
-        val randomDistances: MutableList<Float> = ArrayList()
-        val myLocation = Location("")
-        myLocation.latitude = point.latitude
-        myLocation.longitude = point.longitude
-
-        //This is to generate 10 random points
-        for (i in 0..9) {
-            val x0 = point.latitude
-            val y0 = point.longitude
-            val random = Random()
-
-            // Convert radius from meters to degrees
-            val radiusInDegrees = (radius / 111000f).toDouble()
-            val u: Double = random.nextDouble()
-            val v: Double = random.nextDouble()
-            val w = radiusInDegrees * Math.sqrt(u)
-            val t = 2 * Math.PI * v
-            val x = w * Math.cos(t)
-            val y = w * Math.sin(t)
-
-            // Adjust the x-coordinate for the shrinking of the east-west distances
-            val new_x = x / Math.cos(y0)
-            val foundLatitude = new_x + x0
-            val foundLongitude = y + y0
-            val randomLatLng = LatLng(foundLatitude, foundLongitude)
-            randomPoints.add(randomLatLng)
-            val l1 = Location("")
-            l1.latitude = randomLatLng.latitude
-            println(l1.latitude)
-            l1.longitude = randomLatLng.longitude
-            println(l1.longitude)
-            randomDistances.add(l1.distanceTo(myLocation))
-        }
-        //Get nearest point to the centre
-        val indexOfNearestPointToCentre = randomDistances.indexOf(Collections.min(randomDistances))
-        return randomPoints[indexOfNearestPointToCentre]
-    }
-    companion object {
+    companion object {  //Constants of permission used to request the permission for location
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
         private const val PLACE_PICKER_REQUEST = 3
     }
 
-
     override fun onMarkerClick(p0: Marker): Boolean {
         return false
     }
 
+    /**
+     * Function called to set up the map :
+     *  - Check permission for the localisation
+     *  - Check and initialize lastLocation with fusedLocationClient
+     *  - Get the coordinates of some bins with a request
+     *  - Display on the map a bin icon for every coordinate
+     **/
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(applicationContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
             return
         }
-        // 1
-
         mMap.isMyLocationEnabled = true
 
-// 2
         fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
-            // Got last known location. In some rare situations this can be null.
-            // 3
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-
-               // for (i in 1..10) {
-                   // println(i)
-                    //val rand_loc = getRandomLocation(location, 500)
 
                     /** Get bin coordinates **/
                     WebClient(applicationContext).getBinCoordinates { response ->
