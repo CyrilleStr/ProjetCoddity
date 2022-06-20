@@ -1,8 +1,7 @@
-package com.sosacy.projetcoddity
+package com.sosacy.projetcoddity.ui.validation
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +17,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
+import com.sosacy.projetcoddity.R
 import com.sosacy.projetcoddity.data.model.Garbage
 import com.sosacy.projetcoddity.data.model.GarbageList
 import com.sosacy.projetcoddity.databinding.FragmentValidationBinding
 import com.sosacy.projetcoddity.web.WebClient
 import com.yuyakaido.android.cardstackview.*
-import com.yuyakaido.android.cardstackview.sample.CardStackAdapter
 import com.yuyakaido.android.cardstackview.sample.GarbageDiffCallback
 import java.util.ArrayList
 
@@ -34,9 +33,6 @@ import java.util.ArrayList
  */
 class ValidationFragment : Fragment(), CardStackListener {
     private val hideHandler = Handler()
-
-    private val TAG = ValidationFragment::class.java.simpleName
-
 
     @Suppress("InlinedApi")
     private val hidePart2Runnable = Runnable {
@@ -77,38 +73,33 @@ class ValidationFragment : Fragment(), CardStackListener {
     private var dummyButton: Button? = null
     private var fullscreenContent: View? = null
     private var fullscreenContentControls: View? = null
-
     private var _binding: FragmentValidationBinding? = null
+    var garbages = ArrayList<Garbage>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         super.onCreate(savedInstanceState)
         _binding = FragmentValidationBinding.inflate(inflater, container, false)
-
         return binding.root
-
     }
-
-    var garbages = ArrayList<Garbage>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //setContentView(R.layout.fragment_validation)
-        //setupNavigation()
+
+        // Setup get the Garbages list
         WebClient(requireContext()).getGarbagesToRate() {
             var garbageList = GarbageList()
             garbageList.parseJson(it!!)
             garbages = garbageList.all
-            if (garbages.size == 0) {
+
+            if (garbages.size == 0) { //Exit the view when the Garbages list is empty
                 Navigation.findNavController(this.requireView())
                     .navigate(R.id.action_validation_to_navigation_home)
             } else {
@@ -212,40 +203,24 @@ class ValidationFragment : Fragment(), CardStackListener {
     private val manager by lazy { CardStackLayoutManager(this.requireContext(), this) }
     private val adapter by lazy { CardStackAdapter(garbages) }
 
-    var nb = 0
-
-    /*override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawers()
-        } else {
-            super.onBackPressed()
-        }
-    }*/
+    var nb = 0 //Counter
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
-        Log.d("CardStackView", "onCardDragging: d = ${direction.name}, r = $ratio")
     }
 
     override fun onCardSwiped(direction: Direction) {
         updateBtnView(nb + 1)
 
         var liveGarbage = adapter.getGarbages()[nb].id
-        Log.d(TAG, "id card=" + liveGarbage)
 
         if (direction == Direction.Right) {
             WebClient(requireContext()).rateGarbage(liveGarbage, 1) {
-                Log.d(TAG, "Card id=" + liveGarbage + " note=" + 1)
             }
         } else if (direction == Direction.Left) {
             WebClient(requireContext()).rateGarbage(liveGarbage, 0) {
-                Log.d(TAG, "Card id=" + liveGarbage + " note=" + 0)
             }
         }
 
-        Log.d(
-            "CardStackView",
-            "onCardSwiped nº$nb id=$liveGarbage p = ${manager.topPosition}, d = $direction"
-        )
         if (manager.topPosition == adapter.itemCount - 5) {
             paginate()
         }
@@ -257,57 +232,22 @@ class ValidationFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardRewound() {
-        Log.d("CardStackView", "onCardRewound: ${manager.topPosition}")
-
         updateBtnView(nb + 1)
         nb--
         var liveGarbage = adapter.getGarbages()[nb].id
-        Log.d(TAG, "id card=" + liveGarbage)
-
     }
 
     override fun onCardCanceled() {
-        Log.d("CardStackView", "onCardCanceled: ${manager.topPosition}")
     }
 
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_name)
-        Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.item_name)
-        Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
-        var nbTotal = adapter.getGarbages().size
-
-        Log.d(TAG, "Nb of Card($position) = $nb/$nbTotal")
+        //var nbTotal = adapter.getGarbages().size
     }
-
-    /*private fun setupNavigation() {
-        // Toolbar
-        val toolbar = requireView().findViewById<Toolbar>(R.id.toolbar)
-
-        // DrawerLayout
-        val actionBarDrawerToggle = ActionBarDrawerToggle(requireView().this, drawerLayout, toolbar, com.yuyakaido.android.cardstackview.R.string.open_drawer, com.yuyakaido.android.cardstackview.R.string.close_drawer)
-        actionBarDrawerToggle.syncState()
-        drawerLayout.addDrawerListener(actionBarDrawerToggle)
-
-        // NavigationView
-        /*val navigationView = requireView().findViewById<NavigationView>(R.id.navigation_view)
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                com.yuyakaido.android.cardstackview.R.id.reload -> reload()
-                com.yuyakaido.android.cardstackview.R.id.add_spot_to_first -> addFirst(1)
-                com.yuyakaido.android.cardstackview.R.id.add_spot_to_last -> addLast(1)
-                com.yuyakaido.android.cardstackview.R.id.remove_spot_from_first -> removeFirst(1)
-                com.yuyakaido.android.cardstackview.R.id.remove_spot_from_last -> removeLast(1)
-                com.yuyakaido.android.cardstackview.R.id.replace_first_spot -> replace()
-                com.yuyakaido.android.cardstackview.R.id.swap_first_for_last -> swap()
-            }
-            drawerLayout.closeDrawers()
-            true
-        }*/
-    }*/
 
     private fun setupCardStackView() {
         initialize()
@@ -344,7 +284,6 @@ class ValidationFragment : Fragment(), CardStackListener {
             cardStackView.swipe()
 
             var liveGarbage = adapter.getGarbages()[nb].id - 1
-            Log.d(TAG, "id card=" + liveGarbage)
 
             if (nb > 0) {
                 rewind.setVisibility(View.VISIBLE);
@@ -369,7 +308,6 @@ class ValidationFragment : Fragment(), CardStackListener {
             manager.setRewindAnimationSetting(setting)
             cardStackView.rewind()
 
-            Log.d(TAG, "nb=" + nb)
             if (nb > 0) {
                 rewind.setVisibility(View.VISIBLE);
             }
@@ -391,9 +329,6 @@ class ValidationFragment : Fragment(), CardStackListener {
                 .build()
             manager.setSwipeAnimationSetting(setting)
             cardStackView.swipe()
-
-            Log.d(TAG, "nb=" + nb)
-
         }
     }
 

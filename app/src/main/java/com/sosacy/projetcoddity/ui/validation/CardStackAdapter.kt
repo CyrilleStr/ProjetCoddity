@@ -1,6 +1,5 @@
-package com.yuyakaido.android.cardstackview.sample
+package com.sosacy.projetcoddity.ui.validation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,6 @@ class CardStackAdapter(
             .load(garbage.randomImage())
             .into(holder.image)
 
-        Log.i("garbage url:",garbage.randomImage())
         holder.itemView.setOnClickListener { v ->
             Toast.makeText(v.context, garbage.id, Toast.LENGTH_SHORT).show()
         }

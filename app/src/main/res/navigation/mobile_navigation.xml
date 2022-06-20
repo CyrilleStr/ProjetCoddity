@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/validationFragement"
-        android:name="com.sosacy.projetcoddity.ValidationFragment"
+        android:name="com.sosacy.projetcoddity.ui.validation.ValidationFragment"
         android:label="fragment_validation"
         tools:layout="@layout/fragment_validation" >
         <action
