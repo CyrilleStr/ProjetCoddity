@@ -13,4 +13,7 @@ This android application is meant for the [Coddity](https://bourse.coddity.com/)
 - OpenJDK
 - An android device or emulator
 ## Run
-Install `app-debug.apk` on your android device or emulator.
+- Install `app-debug.apk` on your android device or emulator.
+- Credentials for login page : 
+  - username: 'cy'
+  - password: 'cy' 
