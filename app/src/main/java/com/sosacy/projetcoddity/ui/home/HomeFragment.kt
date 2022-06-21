@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
     /* location */
     private lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var locationRefresh:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,7 +99,11 @@ class HomeFragment : Fragment() {
                 pictureImgVw.visibility = View.INVISIBLE
 
                 // Get location
+                locationRefresh = false
                 getLocation()
+                while(!locationRefresh){
+                    println("Wait for location")
+                }
 
                 // Add garbage
                 WebClient(applicationContext).addGarbage(
@@ -127,7 +132,15 @@ class HomeFragment : Fragment() {
             override fun onClick(p0: View?) {
                 addItemSelection.visibility = View.INVISIBLE
                 pictureImgVw.visibility = View.INVISIBLE
+
+                // Get location
+                locationRefresh = false
                 getLocation()
+                while(!locationRefresh){
+                    println("Wait for location ")
+                }
+
+                // Add bin
                 WebClient(applicationContext).addBin(lastLocation.latitude.toString(),
                     lastLocation.longitude.toString(),
                     /** On request result **/
@@ -195,8 +208,10 @@ class HomeFragment : Fragment() {
         }
 
         fusedLocationClient.lastLocation.addOnSuccessListener(applicationActivity) { location ->
-            if (location != null)
+            if (location != null){
                 lastLocation = location
+                locationRefresh = true
+            }
             else
                 requestLocation()
         }
@@ -240,6 +255,7 @@ class HomeFragment : Fragment() {
 
             if (location != null) {
                 lastLocation = location
+                locationRefresh = true
             }
         }
     }
